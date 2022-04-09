@@ -2,6 +2,7 @@ import imp
 import arcade
 from arcade import gui
 from game_view import GameView
+from style import Style
 
 
 class GameStartView(arcade.View):
@@ -15,11 +16,11 @@ class GameStartView(arcade.View):
 
         self.btn_grp = gui.UIBoxLayout()
 
-        start_btn = gui.UIFlatButton(text="Start", width=200)
+        start_btn = gui.UIFlatButton(text="Start", width=200, style=Style.primary_btn)
         self.btn_grp.add(start_btn.with_space_around(bottom=20))
         start_btn.on_click = self.start
 
-        quit_btn = gui.UIFlatButton(text="Quit", width=200)
+        quit_btn = gui.UIFlatButton(text="Quit", width=200, style=Style.secondary_btn)
         self.btn_grp.add(quit_btn.with_space_around(bottom=20))
         quit_btn.on_click = self.quit
 
