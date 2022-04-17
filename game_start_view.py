@@ -1,7 +1,8 @@
+import imp
 import arcade
 from arcade import gui
+from game_view import GameView
 from style import Style
-import views.game_view
 
 
 class GameStartView(arcade.View):
@@ -31,8 +32,9 @@ class GameStartView(arcade.View):
 
     def start(self, event):
         print("Starting wordMD")
+        game_view = GameView()
         self.manager.disable()
-        self.window.show_view(views.game_view.GameView())
+        self.window.show_view(game_view)
 
     def quit(self, event):
         print("Exiting wordMD")

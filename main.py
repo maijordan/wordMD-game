@@ -1,5 +1,5 @@
 import arcade
-from views.game_start_view import GameStartView
+from game_start_view import GameStartView
 
 # CONSTANTS
 SCREEN_WIDTH = 1000
