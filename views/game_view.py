@@ -1,4 +1,5 @@
 import arcade
+import views.game_end_view
 
 
 class GameView(arcade.View):
@@ -20,3 +21,11 @@ class GameView(arcade.View):
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         print("clicked")
+
+    def on_key_press(self, symbol: int, modifiers: int):
+        # temporary way to get to end screen: type the letter d
+        if symbol == arcade.key.D:
+            self.end_game()
+
+    def end_game(self):
+        self.window.show_view(views.game_end_view.GameEndView())
