@@ -21,15 +21,17 @@ class GameView(arcade.View):
         self.test_subject.center_y = 400
         self.test.append(self.test_subject)
 
+        self.lives = 3
+
     def on_draw(self):
         self.clear()
         arcade.draw_text(
-            "wordMD game goes here",
-            self.window.width / 2,
-            self.window.height / 2,
-            arcade.color.WHITE,
-            font_size=24,
-            anchor_x="center",
+            "Lives: " + "\u2665 " * self.lives,
+            self.window.width - 160,
+            self.window.height - 40,
+            arcade.csscolor.TOMATO,
+            font_size=18,
+            anchor_x="left",
         )
         self.player_list.draw()
         # test for collision
@@ -50,8 +52,10 @@ class GameView(arcade.View):
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         print("clicked")
 
-    def end_game(self):
-        self.window.show_view(views.game_end_view.GameEndView())
+    def die(self):
+        self.lives -= 1
+        if self.lives == 0:
+            self.window.show_view(views.game_end_view.GameEndView())
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:
@@ -77,4 +81,4 @@ class GameView(arcade.View):
                 self.player_model.center_x += 100
         # temporary way to get to end screen: type the letter d
         elif key == arcade.key.D:
-            self.end_game()
+            self.die()
