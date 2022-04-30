@@ -6,6 +6,8 @@ class GameView(arcade.View):
     """View to show game screen"""
 
     def on_show(self):
+        self.background = arcade.load_texture("resources/road_01.png")
+
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
         # sprite list to hold all sprites
         self.bullet_list = arcade.SpriteList()
@@ -23,14 +25,11 @@ class GameView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text(
-            "wordMD game goes here",
-            self.window.width / 2,
-            self.window.height / 2,
-            arcade.color.WHITE,
-            font_size=24,
-            anchor_x="center",
+
+        arcade.draw_lrwh_rectangle_textured(
+            0, 0, self.window.width, self.window.height, self.background
         )
+
         self.player_list.draw()
         # test for collision
         self.test.draw()

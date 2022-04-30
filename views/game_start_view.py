@@ -13,19 +13,24 @@ class GameStartView(arcade.View):
 
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
 
-        self.btn_grp = gui.UIBoxLayout()
+        self.menu_grp = gui.UIBoxLayout()
+
+        title = gui.UISpriteWidget(
+            sprite=arcade.Sprite("resources/title_01.png"), width=300
+        )
+        self.menu_grp.add(title.with_space_around(bottom=50))
 
         start_btn = gui.UIFlatButton(text="Start", width=200, style=Style.primary_btn)
-        self.btn_grp.add(start_btn.with_space_around(bottom=20))
+        self.menu_grp.add(start_btn.with_space_around(bottom=20))
         start_btn.on_click = self.start
 
         quit_btn = gui.UIFlatButton(text="Quit", width=200, style=Style.secondary_btn)
-        self.btn_grp.add(quit_btn.with_space_around(bottom=20))
+        self.menu_grp.add(quit_btn.with_space_around(bottom=20))
         quit_btn.on_click = self.quit
 
         self.manager.add(
             gui.UIAnchorWidget(
-                anchor_x="center_x", anchor_y="center_y", child=self.btn_grp
+                anchor_x="center_x", anchor_y="center_y", child=self.menu_grp
             )
         )
 
