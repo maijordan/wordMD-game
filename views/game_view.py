@@ -1,27 +1,30 @@
 import arcade
+from letter_list import LetterList
 import views.game_end_view
-
 
 class GameView(arcade.View):
     """View to show game screen"""
 
-    def on_show(self):
+    def __init__(self):
+        super().__init__()
+
+        self.letter_list = LetterList(self.window.width)
+
+    def setup(self):
         self.background = arcade.load_texture("resources/road_01.png")
 
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
         # sprite list to hold all sprites
         self.bullet_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
-        self.test = arcade.SpriteList()
 
         self.player_model = arcade.Sprite("resources/ambulance_01.png", 0.05)
         self.player_model.center_x = self.window.width / 2
         self.player_model.center_y = 50
         self.player_list.append(self.player_model)
-        self.test_subject = arcade.Sprite("resources/ambulance_01.png", 0.05)
-        self.test_subject.center_x = self.window.width / 2
-        self.test_subject.center_y = 400
-        self.test.append(self.test_subject)
+
+    def on_show(self):
+        self.setup()
 
     def on_draw(self):
         self.clear()
@@ -31,17 +34,20 @@ class GameView(arcade.View):
         )
 
         self.player_list.draw()
-        # test for collision
-        self.test.draw()
+
+        self.letter_list.letters.draw()
         self.bullet_list.draw()
 
     def on_update(self, delta_time):
         self.bullet_list.update()
         for bullet in self.bullet_list:
-
-            hit_list = arcade.check_for_collision_with_list(bullet, self.test)
+            hit_list = arcade.check_for_collision_with_list(
+                bullet, self.letter_list.letters
+            )
             if len(hit_list) > 0:
                 bullet.remove_from_sprite_lists()
+                for letter in hit_list:
+                    self.letter_list.remove(letter)
 
             if bullet.bottom > self.window.height:
                 bullet.remove_from_sprite_lists()
@@ -65,15 +71,15 @@ class GameView(arcade.View):
             self.bullet_list.append(bullet)
 
         elif key == arcade.key.LEFT:
-            if self.player_model.center_x - 100 < 0:
+            if self.player_model.center_x - 50 < 0:
                 print("don't do it")
             else:
-                self.player_model.center_x += -100
+                self.player_model.center_x += -50
         elif key == arcade.key.RIGHT:
-            if self.player_model.center_x + 100 > self.window.width:
+            if self.player_model.center_x + 50 > self.window.width:
                 print("don't do it")
             else:
-                self.player_model.center_x += 100
+                self.player_model.center_x += 50
         # temporary way to get to end screen: type the letter d
         elif key == arcade.key.D:
             self.end_game()
