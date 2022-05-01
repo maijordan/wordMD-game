@@ -1,8 +1,9 @@
 import arcade
 from letter_list import LetterList
-from letter_list_health import letterHealth
+from letter_health import LetterHealth
 import views.game_end_view
 
+bulletDamage = -1 #keep value negative
 playerMovementSpeed = 5
 playerModel = arcade.Sprite("resources/ambulance_01.png", .05)
 gunSound = arcade.load_sound(":resources:sounds/hurt4.wav")
@@ -91,7 +92,7 @@ class GameView(arcade.View):
                 bullet.remove_from_sprite_lists()
                 for letter in hit_list:
                     #change to change the amount of damage each syringe does
-                   letter.currentHealth += -1
+                   letter.currentHealth += bulletDamage
                 if letter.currentHealth <= 0:
                     self.letter_list.remove(letter)
 
@@ -106,9 +107,6 @@ class GameView(arcade.View):
         if self.background2.bottom <= -self.window.height:
             self.background2.center_y = self.window.height + self.background2.height/2
         
-
-    def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
-        print("clicked")
 
     def end_game(self):
         self.window.show_view(views.game_end_view.GameEndView())

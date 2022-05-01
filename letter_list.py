@@ -1,7 +1,7 @@
 import arcade
 
 from words import WordGenerator
-from letter_list_health import letterHealth
+from letter_health import LetterHealth
 
 class LetterList:
     def __init__(self, win_width):
@@ -16,14 +16,13 @@ class LetterList:
     def gen_word(self):
         self.__letters = arcade.SpriteList()
         self.__word = self.__wg.generateWords(1, 3, 7, 1, 3)[0]
-        #testing continous fire doesn't work with the 1 shot, messes up the generation
         print(self.__word)
         start = (
             self.__win_width / 2 - (self.__word.length() - 1) * self.__tile_spacing / 2
         )
         offset = 0
         for l in self.__word.letters:
-            letter = letterHealth("resources/letters/" + l + ".png", 0.25)
+            letter = LetterHealth("resources/letters/" + l + ".png", 0.25)
             letter.center_x = start + offset
             offset += self.__tile_spacing
             letter.center_y = self.__height
