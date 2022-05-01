@@ -91,7 +91,7 @@ class GameView(arcade.View):
                 bullet.remove_from_sprite_lists()
                 for letter in hit_list:
                     #change to change the amount of damage each syringe does
-                   letter.currentHealth += -0.5
+                   letter.currentHealth += -1
                 if letter.currentHealth <= 0:
                     self.letter_list.remove(letter)
 
