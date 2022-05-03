@@ -6,6 +6,7 @@ from letter_health import LetterHealth
 class LetterList:
     def __init__(self, win_width):
         self.__height = 600
+        self.__points = 0
 
         self.__tile_spacing = 65
         self.__win_width = win_width
@@ -28,11 +29,13 @@ class LetterList:
             letter.center_y = self.__height
             self.__letters.append(letter)
     
-        
-
     @property
     def letters(self):
         return self.__letters
+    
+    @property
+    def getPoints(self):
+        return self.__points
 
     def adjust_space(self):
         start = (
@@ -45,6 +48,7 @@ class LetterList:
             letter.center_y = self.__height
 
     def remove(self, letter):
+        self.__points = 0
         for i in range(len(self.__letters)):
             if letter == self.__letters[i]:
                 self.__word.hitLetter(i)
@@ -55,7 +59,11 @@ class LetterList:
                 else:
                     if check == 1:
                         print("CORRECT")
+                        self.__points = self.__word.getPoints
+                        
                     else:
                         print("WRONG")
                     self.gen_word()
                 break
+     
+
