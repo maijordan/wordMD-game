@@ -6,8 +6,9 @@ bulletDamage = -1  # keep value negative
 playerMovementSpeed = 5
 playerModel = arcade.Sprite("resources/ambulance_01.png", 0.05)
 gunSound = arcade.load_sound(":resources:sounds/hurt4.wav")
-backgroundScrollSpeed = -5  # always negative
-
+backgroundScrollSpeed = -5 #always negative
+leftBarrier = 155
+rightBarrier = 845
 
 class GameView(arcade.View):
     """View to show game screen"""
@@ -24,6 +25,7 @@ class GameView(arcade.View):
         self.leftPressed = False
 
     def setup(self):
+        self.player_points = 0;
         self.background1 = arcade.Sprite("resources/road_01.png")
         self.background1.width = self.window.width
         self.background1.height = self.window.height
@@ -55,6 +57,13 @@ class GameView(arcade.View):
         self.background_list.draw()
         self.bullet_list.draw()
         self.player_list.draw()
+        arcade.draw_text(
+            self.player_points,
+            10,
+            10,
+            arcade.csscolor.WHITE,
+            18,
+        )
 
         self.letter_list.letters.draw()
         for letter in self.letter_list.letters:
@@ -89,15 +98,18 @@ class GameView(arcade.View):
             self.bullet_list.append(bullet)
             arcade.play_sound(gunSound, 0.25)
         if self.leftPressed:
-            if playerModel.center_x - playerMovementSpeed < 0:
+            if (playerModel.center_x - playerModel.width/2) - playerMovementSpeed < leftBarrier:
+                #play sound
                 print("don't do it")
             else:
-                playerModel.center_x += -5
+                playerModel.center_x += -playerMovementSpeed
         if self.rightPressed:
-            if playerModel.center_x + playerMovementSpeed > self.window.width:
+            if (playerModel.center_x + playerModel.width/2) + playerMovementSpeed > rightBarrier:
+                #play sound
                 print("don't do it")
             else:
-                playerModel.center_x += 5
+                playerModel.center_x += playerMovementSpeed
+                
         for bullet in self.bullet_list:
             hit_list = arcade.check_for_collision_with_list(
                 bullet, self.letter_list.letters
@@ -109,6 +121,9 @@ class GameView(arcade.View):
                     letter.currentHealth += bulletDamage
                 if letter.currentHealth <= 0:
                     self.letter_list.remove(letter)
+                    #add points 
+                    self.player_points += (self.letter_list.getPoints * 100)
+                    
 
             if bullet.bottom > self.window.height:
                 bullet.remove_from_sprite_lists()
@@ -140,10 +155,9 @@ class GameView(arcade.View):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:
-            print("space")
-            # creation of bullet to add to bullet sprite list
-            # self.bullet_list.append(self.create_bullet())
-            # self.on_key_release(key,modifiers)
+            #creation of bullet to add to bullet sprite list
+            #self.bullet_list.append(self.create_bullet())
+            #self.on_key_release(key,modifiers)
             self.spacePressed = True
         elif key == arcade.key.LEFT:
             self.leftPressed = True
@@ -155,7 +169,6 @@ class GameView(arcade.View):
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.SPACE:
-            print("release")
             self.spacePressed = False
         elif key == arcade.key.LEFT:
             self.leftPressed = False
