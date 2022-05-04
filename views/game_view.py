@@ -12,7 +12,7 @@ incorrectSound = arcade.load_sound(":resources:sounds/hurt3.wav")
 backgroundScrollSpeed = -5 #always negative
 leftBarrier = 155
 rightBarrier = 845
-letterMovementSpeed = -.5 #always negative
+letterMovementSpeed = -1 #always negative
 
 class GameView(arcade.View):
     """View to show game screen"""
@@ -118,8 +118,10 @@ class GameView(arcade.View):
         #for loop to check for when letter reaches the player height
         for letter in self.letter_list.letters:
             if(letter.bottom < playerModel.center_y + playerModel.height/2):
-                self.letter_list.remove(letter)
+                #self.letter_list.remove(letter)
+                self.letter_list.gen_word()
                 arcade.play_sound(incorrectSound)
+                break
                 
         for bullet in self.bullet_list:
             hit_list = arcade.check_for_collision_with_list(bullet, self.letter_list.letters)
@@ -136,6 +138,7 @@ class GameView(arcade.View):
                         arcade.play_sound(correctSound)
                     if(self.letter_list.isWrong):
                         arcade.play_sound(incorrectSound)
+                      
                     
 
             if bullet.bottom > self.window.height:
