@@ -85,7 +85,7 @@ class GameView(arcade.View):
         self.letter_list.letters.draw()
         for letter in self.letter_list.letters:
             #letter move down speed
-            #letter.center_y += letterMovementSpeed
+            letter.center_y += letterMovementSpeed
             letter.currentHealthBar()
         
 
@@ -134,7 +134,7 @@ class GameView(arcade.View):
                     self.player_points += (self.letter_list.getPoints * 100)
                     if(self.letter_list.getPoints > 0):
                         arcade.play_sound(correctSound)
-                    if(self.letter_list.isWrong == 1):
+                    if(self.letter_list.isWrong):
                         arcade.play_sound(incorrectSound)
                     
 

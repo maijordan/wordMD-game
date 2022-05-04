@@ -7,7 +7,7 @@ class LetterList:
     def __init__(self, win_width):
         self.__height = 600
         self.__points = 0
-        self.__isWrong = 0
+        self.__isWrong = False
         self.__tile_spacing = 65
         self.__win_width = win_width
 
@@ -53,7 +53,7 @@ class LetterList:
 
     def remove(self, letter):
         self.__points = 0
-        self.__isWrong = 0
+        self.__isWrong = False
         for i in range(len(self.__letters)):
             if letter == self.__letters[i]:
                 self.__word.hitLetter(i)
@@ -68,7 +68,7 @@ class LetterList:
                         
                     else:
                         print("WRONG")
-                        self.__isWrong = 1
+                        self.__isWrong = True
                     self.gen_word()
                 break
      
