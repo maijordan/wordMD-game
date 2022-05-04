@@ -12,7 +12,7 @@ incorrectSound = arcade.load_sound(":resources:sounds/hurt3.wav")
 backgroundScrollSpeed = -5 #always negative
 leftBarrier = 155
 rightBarrier = 845
-letterMovementSpeed = -1 #always negative
+letterMovementSpeed = -.5 #always negative
 
 class GameView(arcade.View):
     """View to show game screen"""
