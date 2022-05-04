@@ -8,6 +8,11 @@ class WordObject:
         self.__ogWord = word
         self.__letters = [l for l in word]
         self.__numInfected = 0
+        self.__points = 0
+        
+    @property
+    def getPoints(self):
+        return self.__points
         
     @property
     def letters(self):
@@ -15,6 +20,7 @@ class WordObject:
 
     def infect(self, lower, upper):
         numToInfect = randint(lower, upper)
+        self.__points += numToInfect
         self.__numInfected += numToInfect
         for _ in range(numToInfect):
             idx = randint(0, len(self.__letters))
