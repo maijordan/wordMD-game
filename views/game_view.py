@@ -57,34 +57,54 @@ class GameView(arcade.View):
         self.background_list.draw()
         self.bullet_list.draw()
         self.player_list.draw()
-        arcade.draw_text(
-            self.player_points,
-            10,
-            10,
-            arcade.csscolor.WHITE,
-            18,
-        )
 
         self.letter_list.letters.draw()
         for letter in self.letter_list.letters:
             letter.currentHealthBar()
+                        
+        arcade.draw_lrtb_rectangle_filled(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
+        arcade.draw_lrtb_rectangle_outline(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
 
         arcade.draw_text(
             "Lives",
-            self.window.width - 115,
-            self.window.height - 40,
-            arcade.csscolor.RED,
-            font_size=18,
-            anchor_x="left",
+            self.window.width - 86,
+            self.window.height - 45,
+            arcade.csscolor.WHITE,
+            font_size=26,
+            anchor_x="center",
+            font_name="Kenney High"
         )
 
         arcade.draw_text(
             "\u2665 " * self.lives,
             self.window.width - 115,
             self.window.height - 65,
-            arcade.csscolor.RED,
+            arcade.csscolor.LIGHT_PINK,
             font_size=18,
             anchor_x="left",
+        )
+        
+        arcade.draw_lrtb_rectangle_filled(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
+        arcade.draw_lrtb_rectangle_outline(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
+
+        arcade.draw_text(
+            "Points",
+            86,
+            self.window.height - 45,
+            arcade.csscolor.WHITE,
+            font_size=26,
+            anchor_x="center",
+            font_name="Kenney High"
+        )
+
+        arcade.draw_text(
+            self.player_points,
+            86,
+            self.window.height - 67,
+            arcade.csscolor.WHITE_SMOKE,
+            font_size=18,
+            anchor_x="center",
+            font_name="Kenney High"
         )
 
     def on_update(self, delta_time):
