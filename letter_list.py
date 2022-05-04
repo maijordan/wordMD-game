@@ -7,7 +7,7 @@ class LetterList:
     def __init__(self, win_width):
         self.__height = 600
         self.__points = 0
-
+        self.__isWrong = 0
         self.__tile_spacing = 65
         self.__win_width = win_width
 
@@ -36,6 +36,10 @@ class LetterList:
     @property
     def getPoints(self):
         return self.__points
+    
+    @property
+    def isWrong(self):
+        return self.__isWrong
 
     def adjust_space(self):
         start = (
@@ -49,6 +53,7 @@ class LetterList:
 
     def remove(self, letter):
         self.__points = 0
+        self.__isWrong = 0
         for i in range(len(self.__letters)):
             if letter == self.__letters[i]:
                 self.__word.hitLetter(i)
@@ -63,6 +68,7 @@ class LetterList:
                         
                     else:
                         print("WRONG")
+                        self.__isWrong = 1
                     self.gen_word()
                 break
      

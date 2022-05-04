@@ -7,9 +7,12 @@ bulletDamage = -1 #keep value negative
 playerMovementSpeed = 5
 playerModel = arcade.Sprite("resources/ambulance_01.png", .05)
 gunSound = arcade.load_sound(":resources:sounds/hurt4.wav")
+correctSound = arcade.load_sound("resources/sounds/correct.mp3")
+incorrectSound = arcade.load_sound("resources/sounds/incorrect.mp3")
 backgroundScrollSpeed = -5 #always negative
 leftBarrier = 155
 rightBarrier = 845
+letterMovementSpeed = -1 #always negative
 
 class GameView(arcade.View):
     """View to show game screen"""
@@ -43,6 +46,12 @@ class GameView(arcade.View):
         self.background2.center_x = self.window.width / 2
         self.background2.change_y = backgroundScrollSpeed
         self.background_list.append(self.background2)
+        #DW about this
+        # self.secret = arcade.Sprite("resources/secret.png", 0.1)
+        # self.secret.center_x = 985
+        # self.secret.center_y = 3600
+        # self.secret.change_y = -15
+        
 
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
     
@@ -64,6 +73,7 @@ class GameView(arcade.View):
         self.background_list.draw()
         self.bullet_list.draw()   
         self.player_list.draw()
+        #self.secret.draw()
         arcade.draw_text(
             self.player_points,
             10,
@@ -74,10 +84,15 @@ class GameView(arcade.View):
 
         self.letter_list.letters.draw()
         for letter in self.letter_list.letters:
+            #letter move down speed
+            #letter.center_y += letterMovementSpeed
             letter.currentHealthBar()
         
 
     def on_update(self, delta_time):
+        # self.secret.update()
+        # if self.secret.top <=0:
+        #     self.secret.center_y = 4000
         self.bullet_list.update()
         if self.spacePressed:
             bullet = self.create_bullet()
@@ -99,6 +114,12 @@ class GameView(arcade.View):
                 print("don't do it")
             else:
                 playerModel.center_x += playerMovementSpeed
+        
+        #for loop to check for when letter reaches the player height
+        for letter in self.letter_list.letters:
+            if(letter.bottom < playerModel.center_y + playerModel.height/2):
+                self.letter_list.remove(letter)
+                arcade.play_sound(incorrectSound)
                 
         for bullet in self.bullet_list:
             hit_list = arcade.check_for_collision_with_list(bullet, self.letter_list.letters)
@@ -111,6 +132,10 @@ class GameView(arcade.View):
                     self.letter_list.remove(letter)
                     #add points 
                     self.player_points += (self.letter_list.getPoints * 100)
+                    if(self.letter_list.getPoints > 0):
+                        arcade.play_sound(correctSound)
+                    if(self.letter_list.isWrong == 1):
+                        arcade.play_sound(incorrectSound)
                     
 
             if bullet.bottom > self.window.height:
