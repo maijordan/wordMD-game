@@ -8,7 +8,7 @@ class LetterList:
         self.__height = 600
         self.__points = 0
         self.__isWrong = False
-        self.__tile_spacing = 65
+        self.__tile_spacing = 55
         self.__win_width = win_width
 
         self.__wg = WordGenerator()
@@ -16,13 +16,13 @@ class LetterList:
 
     def gen_word(self):
         self.__letters = arcade.SpriteList()
-        self.__word = self.__wg.generateWords(1, 3, 7, 1, 3)[0]
+        self.__word = self.__wg.generateWords(1, 3, 5, 1, 2)[0]
         start = (
             self.__win_width / 2 - (self.__word.length() - 1) * self.__tile_spacing / 2
         )
         offset = 0
         for l in self.__word.letters:
-            letter = LetterHealth("resources/letters/" + l + ".png", 0.25)
+            letter = LetterHealth("resources/letters/zombie_outline_thick/" + l + ".png", 0.25)
             letter.center_x = start + offset
             offset += self.__tile_spacing
             letter.center_y = self.__height

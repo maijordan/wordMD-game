@@ -1,4 +1,3 @@
-from curses.ascii import TAB
 import arcade
 from letter_list import LetterList
 import views.game_end_view
@@ -12,7 +11,7 @@ incorrectSound = arcade.load_sound(":resources:sounds/hurt3.wav")
 backgroundScrollSpeed = -5 #always negative
 leftBarrier = 155
 rightBarrier = 845
-letterMovementSpeed = -0.5 #always negative
+letterMovementSpeed = -1 #always negative
 
 class GameView(arcade.View):
     """View to show game screen"""
@@ -70,37 +69,56 @@ class GameView(arcade.View):
         self.background_list.draw()
         self.bullet_list.draw()
         self.player_list.draw()
-        #self.secret.draw()
-        arcade.draw_text(
-            self.player_points,
-            10,
-            10,
-            arcade.csscolor.WHITE,
-            18,
-        )
 
         self.letter_list.letters.draw()
         for letter in self.letter_list.letters:
             #letter move down speed
             letter.center_y += letterMovementSpeed
             letter.currentHealthBar()
+                        
+        arcade.draw_lrtb_rectangle_filled(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
+        arcade.draw_lrtb_rectangle_outline(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
 
         arcade.draw_text(
             "Lives",
-            self.window.width - 115,
-            self.window.height - 40,
-            arcade.csscolor.RED,
-            font_size=18,
+            self.window.width - 86,
+            self.window.height - 45,
+            arcade.csscolor.WHITE,
+            font_size=26,
             anchor_x="center",
+            font_name="Kenney High"
         )
 
         arcade.draw_text(
             "\u2665 " * self.lives,
-            self.window.width - 115,
-            self.window.height - 65,
-            arcade.csscolor.RED,
+            self.window.width - 86,
+            self.window.height - 70,
+            arcade.csscolor.LIGHT_PINK,
+            font_size=12,
+            anchor_x="center",
+        )
+        
+        arcade.draw_lrtb_rectangle_filled(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
+        arcade.draw_lrtb_rectangle_outline(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
+
+        arcade.draw_text(
+            "Points",
+            86,
+            self.window.height - 45,
+            arcade.csscolor.WHITE,
+            font_size=26,
+            anchor_x="center",
+            font_name="Kenney High"
+        )
+
+        arcade.draw_text(
+            self.player_points,
+            86,
+            self.window.height - 67,
+            arcade.csscolor.WHITE_SMOKE,
             font_size=18,
             anchor_x="center",
+            font_name="Kenney High"
         )
         
         if self.show_infected:
@@ -218,7 +236,7 @@ class GameView(arcade.View):
             self.leftPressed = True
         elif key == arcade.key.RIGHT:
             self.rightPressed = True
-        elif key == arcade.key.TAB:
+        elif key == arcade.key.LSHIFT:
             self.show_infected = True
 
     def on_key_release(self, key, modifiers):
@@ -228,5 +246,5 @@ class GameView(arcade.View):
             self.leftPressed = False
         elif key == arcade.key.RIGHT:
             self.rightPressed = False
-        elif key == arcade.key.TAB:
+        elif key == arcade.key.LSHIFT:
             self.show_infected = False
