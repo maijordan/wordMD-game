@@ -131,6 +131,7 @@ class GameView(arcade.View):
                 #self.letter_list.remove(letter)
                 self.letter_list.gen_word()
                 arcade.play_sound(incorrectSound)
+                self.die()
                 break
                 
         for bullet in self.bullet_list:
@@ -150,6 +151,7 @@ class GameView(arcade.View):
                         arcade.play_sound(correctSound)
                     if(self.letter_list.isWrong):
                         arcade.play_sound(incorrectSound)
+                        self.die()
                       
                     
 
@@ -191,9 +193,6 @@ class GameView(arcade.View):
             self.leftPressed = True
         elif key == arcade.key.RIGHT:
             self.rightPressed = True
-        # temporary way to get to end screen: type the letter d
-        elif key == arcade.key.D:
-            self.die()
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.SPACE:
