@@ -17,7 +17,6 @@ class LetterList:
     def gen_word(self):
         self.__letters = arcade.SpriteList()
         self.__word = self.__wg.generateWords(1, 3, 7, 1, 3)[0]
-        print(self.__word)
         start = (
             self.__win_width / 2 - (self.__word.length() - 1) * self.__tile_spacing / 2
         )
@@ -32,6 +31,10 @@ class LetterList:
     @property
     def letters(self):
         return self.__letters
+    
+    @property
+    def infectedCount(self):
+        return self.__word.numInfected
     
     @property
     def getPoints(self):

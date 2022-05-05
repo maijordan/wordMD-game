@@ -11,7 +11,7 @@ incorrectSound = arcade.load_sound(":resources:sounds/hurt3.wav")
 backgroundScrollSpeed = -5 #always negative
 leftBarrier = 155
 rightBarrier = 845
-letterMovementSpeed = -1 #always negative
+letterMovementSpeed = -0.5 #always negative
 
 class GameView(arcade.View):
     """View to show game screen"""
@@ -97,6 +97,26 @@ class GameView(arcade.View):
             arcade.csscolor.RED,
             font_size=18,
             anchor_x="left",
+        )
+        
+        arcade.draw_text(
+            "remaining: ",
+            self.window.width / 2,
+            self.window.height / 2 + 70,
+            arcade.make_transparent_color(arcade.color.ARSENIC, 40),
+            font_size=36,
+            anchor_x="center",
+            font_name="Kenney High"
+        )
+        
+        arcade.draw_text(
+            self.letter_list.infectedCount,
+            self.window.width / 2,
+            self.window.height / 2 - 100,
+            arcade.make_transparent_color(arcade.color.ARSENIC, 90),
+            font_size=200,
+            anchor_x="center",
+            font_name="Kenney High"
         )
 
     def on_update(self, delta_time):
