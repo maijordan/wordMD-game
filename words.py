@@ -17,6 +17,10 @@ class WordObject:
     @property
     def letters(self):
         return self.__letters
+    
+    @property
+    def numInfected(self):
+        return self.__numInfected
 
     def infect(self, lower, upper):
         numToInfect = randint(lower, upper)

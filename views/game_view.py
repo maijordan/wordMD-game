@@ -26,6 +26,7 @@ class GameView(arcade.View):
         self.spacePressed = False
         self.rightPressed = False
         self.leftPressed = False
+        self.show_infected = False
 
     def setup(self):
         self.player_points = 0;
@@ -54,11 +55,13 @@ class GameView(arcade.View):
         playerModel.center_x = self.window.width / 2
         playerModel.center_y = 50
         self.player_list.append(playerModel)
+        
+        self.lives = 5
+        
 
     def on_show(self):
         self.setup()
 
-        self.lives = 3
 
     def on_draw(self):
         self.clear()
@@ -88,11 +91,11 @@ class GameView(arcade.View):
 
         arcade.draw_text(
             "\u2665 " * self.lives,
-            self.window.width - 115,
-            self.window.height - 65,
+            self.window.width - 86,
+            self.window.height - 70,
             arcade.csscolor.LIGHT_PINK,
-            font_size=18,
-            anchor_x="left",
+            font_size=12,
+            anchor_x="center",
         )
         
         arcade.draw_lrtb_rectangle_filled(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
@@ -117,6 +120,27 @@ class GameView(arcade.View):
             anchor_x="center",
             font_name="Kenney High"
         )
+        
+        if self.show_infected:
+            arcade.draw_text(
+                "REMAINING",
+                self.window.width / 2,
+                self.window.height / 2 + 70,
+                arcade.make_transparent_color(arcade.color.ARSENIC, 200),
+                font_size=36,
+                anchor_x="center",
+                font_name="Kenney High"
+            )
+            
+            arcade.draw_text(
+                self.letter_list.infectedCount,
+                self.window.width / 2,
+                self.window.height / 2 - 100,
+                arcade.make_transparent_color(arcade.color.ARSENIC, 200),
+                font_size=200,
+                anchor_x="center",
+                font_name="Kenney High"
+            )
 
     def on_update(self, delta_time):
         # self.secret.update()
@@ -212,6 +236,8 @@ class GameView(arcade.View):
             self.leftPressed = True
         elif key == arcade.key.RIGHT:
             self.rightPressed = True
+        elif key == arcade.key.LSHIFT:
+            self.show_infected = True
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.SPACE:
@@ -220,3 +246,5 @@ class GameView(arcade.View):
             self.leftPressed = False
         elif key == arcade.key.RIGHT:
             self.rightPressed = False
+        elif key == arcade.key.LSHIFT:
+            self.show_infected = False
