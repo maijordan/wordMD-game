@@ -1,9 +1,8 @@
 import arcade
 
 #change to change max health of the letters
-maxHealth = 50
+maxHealth = 40
 yOffset = 30
-
 class LetterHealth(arcade.Sprite):
 
     def __init__(self, image, scale):
