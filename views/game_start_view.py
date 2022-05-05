@@ -16,7 +16,7 @@ class GameStartView(arcade.View):
         self.menu_grp = gui.UIBoxLayout()
 
         title = gui.UISpriteWidget(
-            sprite=arcade.Sprite("resources/title_01.png"), width=300
+            sprite=arcade.Sprite("resources/title_01.png"), width=350
         )
         self.menu_grp.add(title.with_space_around(bottom=50))
 

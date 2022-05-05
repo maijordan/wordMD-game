@@ -74,6 +74,26 @@ class GameView(arcade.View):
             arcade.csscolor.WHITE,
             18,
         )
+        
+        arcade.draw_text(
+            "REMAINING",
+            self.window.width / 2,
+            self.window.height / 2 + 70,
+            arcade.make_transparent_color(arcade.color.ARSENIC, 50),
+            font_size=36,
+            anchor_x="center",
+            font_name="Kenney High"
+        )
+        
+        arcade.draw_text(
+            self.letter_list.infectedCount,
+            self.window.width / 2,
+            self.window.height / 2 - 100,
+            arcade.make_transparent_color(arcade.color.ARSENIC, 90),
+            font_size=200,
+            anchor_x="center",
+            font_name="Kenney High"
+        )
 
         self.letter_list.letters.draw()
         for letter in self.letter_list.letters:
@@ -97,26 +117,6 @@ class GameView(arcade.View):
             arcade.csscolor.RED,
             font_size=18,
             anchor_x="left",
-        )
-        
-        arcade.draw_text(
-            "remaining: ",
-            self.window.width / 2,
-            self.window.height / 2 + 70,
-            arcade.make_transparent_color(arcade.color.ARSENIC, 40),
-            font_size=36,
-            anchor_x="center",
-            font_name="Kenney High"
-        )
-        
-        arcade.draw_text(
-            self.letter_list.infectedCount,
-            self.window.width / 2,
-            self.window.height / 2 - 100,
-            arcade.make_transparent_color(arcade.color.ARSENIC, 90),
-            font_size=200,
-            anchor_x="center",
-            font_name="Kenney High"
         )
 
     def on_update(self, delta_time):
