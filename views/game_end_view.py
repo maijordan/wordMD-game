@@ -22,18 +22,24 @@ class GameEndView(arcade.View):
         title = gui.UISpriteWidget(
             sprite=arcade.Sprite("resources/title_01.png"), width=350
         )
-        self.menu_grp.add(title.with_space_around(bottom=50))
+        self.menu_grp.add(title.with_space_around(bottom=30))
         
-        playerScore = "Your Score: "
-        playerScore += str(self.findPlayerScore(score))
-        playerText = arcade.gui.UITextArea(text = playerScore,font_size = 18)
-        self.menu_grp.add(playerText.with_space_around(bottom=20))
-
-        highScore = "Highest Score: "
-        highScore += str(self.findHighestScore(score))
-        highscoreText = arcade.gui.UITextArea(text = highScore,font_size = 18)
-        self.menu_grp.add(highscoreText.with_space_around(bottom=20))
+        yourScoreText = arcade.gui.UILabel(text = "Your Score",font_size = 18)
+        self.menu_grp.add(yourScoreText.with_space_around(bottom=10))
+    
+        playerScore = str(self.findPlayerScore(score))
+        playerText = arcade.gui.UILabel(text = playerScore,font_size = 18,text_color = arcade.color.BLUE_GREEN)
+        self.menu_grp.add(playerText.with_space_around(bottom=10))
         
+    
+        highestScoreText = arcade.gui.UILabel(text = "High Score",font_size = 18)
+        self.menu_grp.add(highestScoreText.with_space_around(bottom=10))
+        
+       
+        highScore = str(self.findHighestScore(score))
+        highscoreText = arcade.gui.UILabel(text = highScore,font_size = 18, text_color = arcade.color.BLUE_GREEN)
+        self.menu_grp.add(highscoreText.with_space_around(bottom=10))
+          
         start_btn = gui.UIFlatButton(
             text="Try Again!", width=200, style=Style.primary_btn
         )
