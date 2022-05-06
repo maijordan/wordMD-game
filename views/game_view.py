@@ -211,6 +211,9 @@ class GameView(arcade.View):
     def die(self):
         self.lives -= 1
         if self.lives == 0:
+            file = open("resources/scores.txt", "a")
+            file.write(str(self.player_points) + ",")
+            file.close()
             self.window.show_view(views.game_end_view.GameEndView())
 
     def create_bullet(self):

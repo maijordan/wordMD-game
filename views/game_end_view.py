@@ -10,6 +10,9 @@ class GameEndView(arcade.View):
 
     def on_show(self):
         self.manager = gui.UIManager()
+        file = open("resources/scores.txt", "r")
+        score = file.readline()
+        file.close()
         self.manager.enable()
 
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
@@ -20,7 +23,17 @@ class GameEndView(arcade.View):
             sprite=arcade.Sprite("resources/title_01.png"), width=350
         )
         self.menu_grp.add(title.with_space_around(bottom=50))
+        
+        playerScore = "Your Score: "
+        playerScore += str(self.findPlayerScore(score))
+        playerText = arcade.gui.UITextArea(text = playerScore,font_size = 18)
+        self.menu_grp.add(playerText.with_space_around(bottom=20))
 
+        highScore = "Highest Score: "
+        highScore += str(self.findHighestScore(score))
+        highscoreText = arcade.gui.UITextArea(text = highScore,font_size = 18)
+        self.menu_grp.add(highscoreText.with_space_around(bottom=20))
+        
         start_btn = gui.UIFlatButton(
             text="Try Again!", width=200, style=Style.primary_btn
         )
@@ -41,7 +54,11 @@ class GameEndView(arcade.View):
             gui.UIAnchorWidget(
                 anchor_x="center_x", anchor_y="center_y", child=self.menu_grp
             )
+            
+        
         )
+        
+        
 
     def restart(self, event):
         print("Restarting wordMD")
@@ -60,3 +77,19 @@ class GameEndView(arcade.View):
     def on_draw(self):
         self.clear()
         self.manager.draw()
+        
+    def findHighestScore(self, scores):
+        splitScores = scores.split(",")
+        splitScores.pop()
+        highScore = 0
+        for score in splitScores:
+            if int(score) > highScore:
+                highScore = int(score)
+        
+        return highScore
+    
+    def findPlayerScore(self,scores):
+        splitScore = scores.split(",")
+        splitScore.pop()
+        return splitScore[len(splitScore)-1]
+ 
