@@ -64,6 +64,7 @@ class GameView(arcade.View):
             )
         )
         
+        
     def resume(self,event):
         self.paused = not self.paused
         
