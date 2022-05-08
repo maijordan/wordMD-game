@@ -3,12 +3,17 @@ from arcade import gui
 from style import Style
 import views.game_view
 import views.game_instruct_view
+import time
 
+musicList = ["resources/sounds/colors.mp3"]
 
 class GameStartView(arcade.View):
     """View to show start screen"""
 
     def on_show(self):
+        self.current = None
+        self.music = None
+        self.play_song()
         self.manager = gui.UIManager()
         self.manager.enable()
 
@@ -56,3 +61,11 @@ class GameStartView(arcade.View):
     def on_draw(self):
         self.clear()
         self.manager.draw()
+
+    def play_song(self):
+        print(f"Playing {musicList[0]}")
+        if self.music:
+            self.music.stop()
+        self.music = arcade.Sound(musicList[0], streaming = True)
+        self.current = self.music.play(1, loop = True)
+        time.sleep(.03)
