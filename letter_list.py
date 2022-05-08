@@ -5,13 +5,18 @@ from letter_health import LetterHealth
 
 class LetterList:
     def __init__(self, win_width):
-        self.__height = 600
+        self.__init_height = 600
         self.__points = 0
         self.__isWrong = False
         self.__tile_spacing = 55
         self.__win_width = win_width
 
         self.__wg = WordGenerator()
+        self.gen_word()
+        
+    def clear(self):
+        self.__points = 0
+        self.__isWrong = False
         self.gen_word()
 
     def gen_word(self):
@@ -25,7 +30,7 @@ class LetterList:
             letter = LetterHealth("resources/letters/zombie_outline_thick/" + l + ".png", 0.25)
             letter.center_x = start + offset
             offset += self.__tile_spacing
-            letter.center_y = self.__height
+            letter.center_y = self.__init_height
             self.__letters.append(letter)
     
     @property
@@ -52,7 +57,7 @@ class LetterList:
         for letter in self.__letters:
             letter.center_x = start + offset
             offset += self.__tile_spacing
-            letter.center_y = self.__height
+            letter.center_y = self.__init_height
 
     def remove(self, letter):
         self.__points = 0

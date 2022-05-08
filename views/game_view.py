@@ -1,6 +1,9 @@
 import arcade
+from arcade import gui
 from letter_list import LetterList
 import views.game_end_view
+import views.game_start_view
+from style import Style
 
 bulletDamage = -1  # keep value negative
 playerMovementSpeed = 5
@@ -23,12 +26,19 @@ class GameView(arcade.View):
         self.bullet_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
         self.background_list = arcade.SpriteList()
+
+    def setup(self):
+        self.letter_list.clear()
+        self.bullet_list.clear()
+        self.player_list.clear()
+        self.background_list.clear()
+        
         self.spacePressed = False
         self.rightPressed = False
         self.leftPressed = False
         self.show_infected = False
-
-    def setup(self):
+        self.paused = False
+        
         self.player_points = 0;
         self.background1 = arcade.Sprite("resources/road_01.png")
         self.background1.width = self.window.width
@@ -56,7 +66,51 @@ class GameView(arcade.View):
         playerModel.center_y = 50
         self.player_list.append(playerModel)
         
-        self.lives = 5
+        self.lives = 3
+        
+        self.manager = gui.UIManager()
+        self.menu_grp = gui.UIBoxLayout()
+        
+        resume_btn = gui.UIFlatButton(
+            text="Resume", width=200, style=Style.primary_btn
+        )
+        self.menu_grp.add(resume_btn.with_space_around(bottom=20))
+        resume_btn.on_click = self.resume
+
+        restart_btn = gui.UIFlatButton(
+            text="Restart", width=200, style=Style.secondary_btn
+        )
+        self.menu_grp.add(restart_btn.with_space_around(bottom=20))
+        restart_btn.on_click = self.restart
+
+        quit_btn = gui.UIFlatButton(
+            text="Main Menu", width=200, style=Style.secondary_btn
+        )
+        self.menu_grp.add(quit_btn.with_space_around(bottom=20))
+        quit_btn.on_click = self.open_start
+
+        quit_btn = gui.UIFlatButton(text="Quit", width=200, style=Style.secondary_btn)
+        self.menu_grp.add(quit_btn.with_space_around(bottom=20))
+        quit_btn.on_click = self.quit
+
+        self.manager.add(
+            gui.UIAnchorWidget(
+                anchor_x="center_x", anchor_y="center_y", child=self.menu_grp
+            )
+        )
+        
+    def resume(self,event):
+        self.paused = not self.paused
+        
+    def restart(self,event):
+        self.setup()
+    
+    def open_start(self,event):
+        self.manager.disable()
+        self.window.show_view(views.game_start_view.GameStartView())
+    
+    def quit(self,event):
+        arcade.exit()
         
 
     def on_show(self):
@@ -70,14 +124,13 @@ class GameView(arcade.View):
         self.bullet_list.draw()
         self.player_list.draw()
 
-        self.letter_list.letters.draw()
-        for letter in self.letter_list.letters:
-            #letter move down speed
-            letter.center_y += letterMovementSpeed
-            letter.currentHealthBar()
+        if not self.paused:
+            self.letter_list.letters.draw()
+            for letter in self.letter_list.letters:
+                letter.currentHealthBar()
                         
-        arcade.draw_lrtb_rectangle_filled(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
-        arcade.draw_lrtb_rectangle_outline(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
+        arcade.draw_lrtb_rectangle_filled(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY)
+        arcade.draw_lrtb_rectangle_outline(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3)
 
         arcade.draw_text(
             "Lives",
@@ -98,8 +151,8 @@ class GameView(arcade.View):
             anchor_x="center",
         )
         
-        arcade.draw_lrtb_rectangle_filled(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
-        arcade.draw_lrtb_rectangle_outline(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
+        arcade.draw_lrtb_rectangle_filled(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY)
+        arcade.draw_lrtb_rectangle_outline(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3)
 
         arcade.draw_text(
             "Points",
@@ -121,7 +174,7 @@ class GameView(arcade.View):
             font_name="Kenney High"
         )
         
-        if self.show_infected:
+        if not self.paused and self.show_infected:
             arcade.draw_text(
                 "REMAINING",
                 self.window.width / 2,
@@ -141,8 +194,19 @@ class GameView(arcade.View):
                 anchor_x="center",
                 font_name="Kenney High"
             )
+            
+        if self.paused:
+            arcade.draw_lrtb_rectangle_filled(0, self.window.width, self.window.height, 0, arcade.make_transparent_color(arcade.csscolor.DARK_SLATE_GRAY, 100))
+            self.manager.enable()
+            self.manager.draw()
+        else:
+            self.manager.disable()
+            
+            
 
     def on_update(self, delta_time):
+        if self.paused:
+            return
         # self.secret.update()
         # if self.secret.top <=0:
         #     self.secret.center_y = 4000
@@ -167,6 +231,10 @@ class GameView(arcade.View):
                 print("don't do it")
             else:
                 playerModel.center_x += playerMovementSpeed
+                
+        for letter in self.letter_list.letters:
+            #letter move down speed
+            letter.center_y += letterMovementSpeed
         
         #for loop to check for when letter reaches the player height
         for letter in self.letter_list.letters:
@@ -211,7 +279,7 @@ class GameView(arcade.View):
     def die(self):
         self.lives -= 1
         if self.lives == 0:
-            file = open("resources/scores.txt", "a")
+            file = open("scores.txt", "a")
             file.write(str(self.player_points) + ",")
             file.close()
             self.window.show_view(views.game_end_view.GameEndView())
@@ -230,7 +298,13 @@ class GameView(arcade.View):
         return bullet
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.SPACE:
+        if key == arcade.key.ESCAPE:
+            self.paused = not self.paused
+            self.spacePressed = False
+            self.leftPressed = False
+            self.rightPressed = False
+            self.show_infected = False
+        elif key == arcade.key.SPACE:
             #creation of bullet to add to bullet sprite list
             #self.bullet_list.append(self.create_bullet())
             #self.on_key_release(key,modifiers)
@@ -243,6 +317,8 @@ class GameView(arcade.View):
             self.show_infected = True
 
     def on_key_release(self, key, modifiers):
+        if self.paused:
+            return
         if key == arcade.key.SPACE:
             self.spacePressed = False
         elif key == arcade.key.LEFT:
