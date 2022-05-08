@@ -85,30 +85,3 @@ class WordGenerator:
             word.infect(smallestInfected, largestInfected)
             infectedWords.append(word)
         return infectedWords
-
-
-def main():
-    """ Main function (for testing) """
-
-    wg = WordGenerator()
-    # words = wg.generateWords(20, 3, 10, 1, 2)
-    # for w in words:
-    #     print(w.info())
-
-    while True:
-        word = wg.generateWords(1, 3, 7, 1, 3)[0]
-        print("".join(list(map(str, range(word.length())))))
-        print(word)
-
-        while word.check() == -1:
-            i = int(input())
-            word.hitLetter(i)
-            print("".join(list(map(str, range(word.length())))))
-            print(word)
-
-        print("CORRECT" if word.check() == 1 else "WRONG")
-        print()
-
-
-if __name__ == "__main__":
-    main()
