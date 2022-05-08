@@ -2,6 +2,7 @@ import arcade
 from arcade import gui
 from style import Style
 import views.game_view
+import views.game_instruct_view
 
 
 class GameStartView(arcade.View):
@@ -24,6 +25,10 @@ class GameStartView(arcade.View):
         self.menu_grp.add(start_btn.with_space_around(bottom=20))
         start_btn.on_click = self.start
 
+        how_btn = gui.UIFlatButton(text="How to Play", width=200, style=Style.secondary_btn)
+        self.menu_grp.add(how_btn.with_space_around(bottom=20))
+        how_btn.on_click = self.instruct
+
         quit_btn = gui.UIFlatButton(text="Quit", width=200, style=Style.secondary_btn)
         self.menu_grp.add(quit_btn.with_space_around(bottom=20))
         quit_btn.on_click = self.quit
@@ -38,6 +43,11 @@ class GameStartView(arcade.View):
         print("Starting wordMD")
         self.manager.disable()
         self.window.show_view(views.game_view.GameView())
+    
+    def instruct(self, event):
+        print("Showing how to play")
+        self.manager.disable()
+        self.window.show_view(views.game_instruct_view.GameInstructView())
 
     def quit(self, event):
         print("Exiting wordMD")
