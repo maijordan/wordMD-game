@@ -3,6 +3,7 @@ from utils.constants import BKGRD_COLOR
 from arcade import gui
 from utils.ui_utils import genBtn, genTitle
 import views.game_view
+import views.game_instruct_view
 
 
 class GameStartView(arcade.View):
@@ -25,6 +26,10 @@ class GameStartView(arcade.View):
         startBtn = genBtn("Start",self.start)
         self.menuGrp.add(startBtn)
 
+        
+        howBtn = genBtn("How to Play",self.instruct)
+        self.menuGrp.add(howBtn)
+
         quitBtn = genBtn("Quit",self.quit,False)
         self.menuGrp.add(quitBtn)
 
@@ -38,6 +43,10 @@ class GameStartView(arcade.View):
     def start(self, event):
         self.manager.disable() #disable btns before moving to new view
         self.window.show_view(views.game_view.GameView())
+    
+    def instruct(self, event):
+        self.manager.disable()
+        self.window.show_view(views.game_instruct_view.GameInstructView())
 
     def quit(self, event):
         arcade.exit()

@@ -1,8 +1,10 @@
 import arcade
+from arcade import gui
 from sprites.bullets import BulletList
 from sprites.letters import LetterList
 from sprites.backgrounds import ScrollingBkgrdList
 from sprites.players import PlayerList
+from utils.ui_utils import genBtn
 import views.game_end_view
 from utils.constants import BKGRD_COLOR,FONT_NAME, NUM_LIVES,CORRECT_SOUND,INCORRECT_SOUND,INFECTED_COUNT_COLOR, SCREEN_HEIGHT, SCREEN_WIDTH
 
@@ -25,6 +27,11 @@ class GameView(arcade.View):
         self.rightPressed = False
         self.leftPressed = False
         self.showInfected = False
+        self.paused = False
+        
+        self.letterList = LetterList()
+        self.bulletList = BulletList()
+        self.playerList = PlayerList()
         
         #reset game status
         self.playerPoints = 0
@@ -35,24 +42,66 @@ class GameView(arcade.View):
         # self.secret.center_x = 985
         # self.secret.center_y = 3600
         # self.secret.change_y = -15
+                
+        self.manager = gui.UIManager()
+        self.menuGrp = gui.UIBoxLayout()
         
+        resumeBtn = genBtn("Resume",self.resume)
+        self.menuGrp.add(resumeBtn)
+        
+        restartBtn = genBtn("Restart",self.restart,False)
+        self.menuGrp.add(restartBtn)
+        
+        menuBtn = genBtn("Main Menu",self.openStart,False)
+        self.menuGrp.add(menuBtn)
+        
+        quitBtn = genBtn("Quit",self.quit,False)
+        self.menuGrp.add(quitBtn)
+
+        self.manager.add(
+            gui.UIAnchorWidget(
+                anchor_x="center_x", anchor_y="center_y", child=self.menuGrp
+            )
+        )
+        
+    def resume(self,event):
+        self.paused = not self.paused
+        
+    def restart(self,event):
+        self.setup()
+    
+    def openStart(self,event):
+        self.manager.disable()
+        self.window.show_view(views.game_start_view.GameStartView())
+    
+    def quit(self,event):
+        arcade.exit()
 
     def on_show(self):
         self.setup() #dif func bc setup also used when restart game
-
 
     def on_draw(self):
         self.clear()
 
         self.backgroundList.draw()
-        self.bulletList.draw()
-        self.playerList.draw()
-        self.letterList.draw()
+
+        if not self.paused:
+            self.letterList.draw()
+            self.bulletList.draw()
+            self.playerList.draw()
         
         self.drawLives()
         self.drawPoints()
         self.drawInfected()
-
+                        
+        if self.paused:
+            arcade.draw_lrtb_rectangle_filled(0, self.window.width, self.window.height, 0, arcade.make_transparent_color(arcade.csscolor.DARK_SLATE_GRAY, 100))
+            self.manager.enable()
+            self.manager.draw()
+        else:
+            self.manager.disable()
+            
+            
     def on_update(self, delta_time):
         # self.secret.update()
         # if self.secret.top <=0:
@@ -74,6 +123,7 @@ class GameView(arcade.View):
         
         #check for bullet-letter collisions and get any points scored
         self.playerPoints += self.bulletList.update(self.letterList,self.handleRight,self.handleWrong)
+        
 
     def drawLives(self):
         """Draws current number of lives in top right corner"""
@@ -112,7 +162,7 @@ class GameView(arcade.View):
     def drawInfected(self):
         """If tab is currently pressed, draws infected count as an overlay"""
 
-        if self.showInfected: 
+        if not self.paused and self.showInfected:
             arcade.draw_text(
                     "REMAINING",
                     SCREEN_WIDTH / 2,
@@ -141,6 +191,9 @@ class GameView(arcade.View):
         
         #if no more lives, go to end game view
         if self.lives == 0:
+            file = open("scores.txt", "a")
+            file.write(str(self.playerPoints) + ",")
+            file.close()
             self.window.show_view(views.game_end_view.GameEndView())
 
         #gen next word
@@ -155,7 +208,13 @@ class GameView(arcade.View):
         self.letterList.genWord()
     
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.SPACE:
+        if key == arcade.key.ESCAPE:
+            self.paused = not self.paused
+            self.spacePressed = False
+            self.leftPressed = False
+            self.rightPressed = False
+            self.showInfected = False
+        elif key == arcade.key.SPACE:
             self.spacePressed = True
         elif key == arcade.key.LEFT:
             self.leftPressed = True
@@ -165,6 +224,8 @@ class GameView(arcade.View):
             self.showInfected = True
 
     def on_key_release(self, key, modifiers):
+        if self.paused:
+            return
         if key == arcade.key.SPACE:
             self.spacePressed = False
         elif key == arcade.key.LEFT:
