@@ -9,15 +9,19 @@ class GameEndView(arcade.View):
     """View to show ending screen"""
 
     def on_show(self):
+        #init ui manager
         self.manager = gui.UIManager()
         self.manager.enable()
 
         arcade.set_background_color(BKGRD_COLOR)
-
+        
+        #create box to group all btns
         self.menuGrp = gui.UIBoxLayout()
 
+        #add logo
         self.menuGrp.add(genTitle())
 
+        #create and add btns
         restartBtn = genBtn("Try Again!",self.restart)
         self.menuGrp.add(restartBtn)
 
@@ -27,6 +31,7 @@ class GameEndView(arcade.View):
         quitBtn = genBtn("Quit",self.quit,False)
         self.menuGrp.add(quitBtn)
 
+        #add and center btn group
         self.manager.add(
             gui.UIAnchorWidget(
                 anchor_x="center_x", anchor_y="center_y", child=self.menuGrp
@@ -34,11 +39,11 @@ class GameEndView(arcade.View):
         )
 
     def restart(self, event):
-        self.manager.disable()
+        self.manager.disable() #disable btns before moving to new view
         self.window.show_view(views.game_view.GameView())
 
     def openStart(self, event):
-        self.manager.disable()
+        self.manager.disable() #disable btns before moving to new view
         self.window.show_view(views.game_start_view.GameStartView())
 
     def quit(self, event):

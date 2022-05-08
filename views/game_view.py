@@ -12,16 +12,21 @@ class GameView(arcade.View):
     def __init__(self):
         super().__init__()
 
+        #init all spritelists
         self.letterList = LetterList()
         self.bulletList = BulletList()
         self.playerList = PlayerList()
         self.backgroundList = ScrollingBkgrdList()
+        
+
+    def setup(self):
+        #reset flags
         self.spacePressed = False
         self.rightPressed = False
         self.leftPressed = False
         self.showInfected = False
-
-    def setup(self):
+        
+        #reset game status
         self.playerPoints = 0
         self.lives = NUM_LIVES
         
@@ -33,7 +38,7 @@ class GameView(arcade.View):
         
 
     def on_show(self):
-        self.setup()
+        self.setup() #dif func bc setup also used when restart game
 
 
     def on_draw(self):
@@ -53,6 +58,7 @@ class GameView(arcade.View):
         # if self.secret.top <=0:
         #     self.secret.center_y = 4000
         
+        #check keyboard flags
         if self.spacePressed:
             self.bulletList.createBullet(self.playerList.centerX,self.playerList.centerY + 4)
         if self.leftPressed:
@@ -60,27 +66,31 @@ class GameView(arcade.View):
         if self.rightPressed:
             self.playerList.move(1)
         
-        #check for when letter reaches the player height
+        #check for when word reached player (player loses a life bc they were too slow)
         if(self.letterList.bottom < self.playerList.top):
             self.handleWrong()
             
         self.backgroundList.update()
         
+        #check for bullet-letter collisions and get any points scored
         self.playerPoints += self.bulletList.update(self.letterList,self.handleRight,self.handleWrong)
 
     def drawLives(self):
-        self.drawSideBoard("Lives","\u2665 " * self.lives,SCREEN_WIDTH - 130, SCREEN_WIDTH - 42,True)
+        """Draws current number of lives in top right corner"""
+        
+        self.drawCornerBoard("Lives","\u2665 " * self.lives,SCREEN_WIDTH - 130, SCREEN_WIDTH - 42,True)
     
     def drawPoints(self):
-        self.drawSideBoard("Points",str(self.playerPoints),42,136)
+        """Draws current number of points in top left corner"""
+        self.drawCornerBoard("Points",str(self.playerPoints),42,136)
     
-    def drawSideBoard(self,topTxt,btmTxt,left,right,isSymbol=False):
+    def drawCornerBoard(self,topTxt,btmTxt,left,right,isSymbol=False):
         arcade.draw_lrtb_rectangle_filled(left,right, SCREEN_HEIGHT - 10, SCREEN_HEIGHT - 80, BKGRD_COLOR);
         arcade.draw_lrtb_rectangle_outline(left,right, SCREEN_HEIGHT - 10, SCREEN_HEIGHT - 80, arcade.csscolor.WHITE, 3);
 
         arcade.draw_text(
             topTxt.strip(),
-            left + (right - left) / 2,
+            left + (right - left) / 2, #calcs middle of corner board to center text
             SCREEN_HEIGHT - 45,
             arcade.csscolor.WHITE,
             font_size=26,
@@ -88,18 +98,21 @@ class GameView(arcade.View):
             font_name=FONT_NAME
         )
 
+        #draws white points or pink hearts depending on isSymbol flag
         arcade.draw_text(
             btmTxt.strip(),
-            left + (right - left) / 2,
+            left + (right - left) / 2, #calcs middle of corner board to center text
             SCREEN_HEIGHT - 67,
             arcade.csscolor.LIGHT_PINK if isSymbol else arcade.csscolor.WHITE_SMOKE,
             font_size=18,
             anchor_x="center",
-            font_name=("arial" if isSymbol else FONT_NAME)
+            font_name=("arial" if isSymbol else FONT_NAME) #hearts only print properly in arial font
         )
         
     def drawInfected(self):
-        if self.showInfected:
+        """If tab is currently pressed, draws infected count as an overlay"""
+
+        if self.showInfected: 
             arcade.draw_text(
                     "REMAINING",
                     SCREEN_WIDTH / 2,
@@ -121,14 +134,24 @@ class GameView(arcade.View):
             )
     
     def handleWrong(self):
+        """Called when word was incorrectly cured"""
+
         arcade.play_sound(INCORRECT_SOUND)
         self.lives -= 1
+        
+        #if no more lives, go to end game view
         if self.lives == 0:
             self.window.show_view(views.game_end_view.GameEndView())
+
+        #gen next word
         self.letterList.genWord()
             
     def handleRight(self):
+        """Called when word was correctly cured"""
+
         arcade.play_sound(CORRECT_SOUND)
+        
+        #gen next word
         self.letterList.genWord()
     
     def on_key_press(self, key, modifiers):
