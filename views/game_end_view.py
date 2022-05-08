@@ -1,9 +1,9 @@
 import arcade
-from constants import BKGRD_COLOR,TITLE_IMG,TITLE_IMG_WIDTH
+from constants import BKGRD_COLOR
 from arcade import gui
+from ui_utils import genBtn, genTitle
 import views.game_view
 import views.game_start_view
-from style import Style
 
 class GameEndView(arcade.View):
     """View to show ending screen"""
@@ -16,26 +16,16 @@ class GameEndView(arcade.View):
 
         self.menuGrp = gui.UIBoxLayout()
 
-        title = gui.UISpriteWidget(
-            sprite=arcade.Sprite(TITLE_IMG), width=TITLE_IMG_WIDTH
-        )
-        self.menuGrp.add(title.with_space_around(bottom=50))
+        self.menuGrp.add(genTitle())
 
-        restartBtn = gui.UIFlatButton(
-            text="Try Again!", width=200, style=Style.primary_btn
-        )
-        self.menuGrp.add(restartBtn.with_space_around(bottom=20))
-        restartBtn.on_click = self.restart
+        restartBtn = genBtn("Try Again!",self.restart)
+        self.menuGrp.add(restartBtn)
 
-        quitBtn = gui.UIFlatButton(
-            text="Main Menu", width=200, style=Style.secondary_btn
-        )
-        self.menuGrp.add(quitBtn.with_space_around(bottom=20))
-        quitBtn.on_click = self.openStart
+        quitBtn = genBtn("Main Menu",self.openStart,False)
+        self.menuGrp.add(quitBtn)
 
-        quitBtn = gui.UIFlatButton(text="Quit", width=200, style=Style.secondary_btn)
-        self.menuGrp.add(quitBtn.with_space_around(bottom=20))
-        quitBtn.on_click = self.quit
+        quitBtn = genBtn("Quit",self.quit,False)
+        self.menuGrp.add(quitBtn)
 
         self.manager.add(
             gui.UIAnchorWidget(

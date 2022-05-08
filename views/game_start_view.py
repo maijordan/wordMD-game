@@ -1,7 +1,7 @@
 import arcade
-from constants import BKGRD_COLOR,TITLE_IMG,TITLE_IMG_WIDTH
+from constants import BKGRD_COLOR
 from arcade import gui
-from style import Style
+from ui_utils import genBtn, genTitle
 import views.game_view
 
 
@@ -16,18 +16,13 @@ class GameStartView(arcade.View):
 
         self.menuGrp = gui.UIBoxLayout()
 
-        title = gui.UISpriteWidget(
-            sprite=arcade.Sprite(TITLE_IMG), width=TITLE_IMG_WIDTH
-        )
-        self.menuGrp.add(title.with_space_around(bottom=50))
+        self.menuGrp.add(genTitle())
 
-        startBtn = gui.UIFlatButton(text="Start", width=200, style=Style.primary_btn)
-        self.menuGrp.add(startBtn.with_space_around(bottom=20))
-        startBtn.on_click = self.start
+        startBtn = genBtn("Start",self.start)
+        self.menuGrp.add(startBtn)
 
-        quitBtn = gui.UIFlatButton(text="Quit", width=200, style=Style.secondary_btn)
-        self.menuGrp.add(quitBtn.with_space_around(bottom=20))
-        quitBtn.on_click = self.quit
+        quitBtn = genBtn("Quit",self.quit,False)
+        self.menuGrp.add(quitBtn)
 
         self.manager.add(
             gui.UIAnchorWidget(

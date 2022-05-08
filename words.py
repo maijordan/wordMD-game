@@ -1,9 +1,11 @@
+from enum import Enum
 from english_words import english_words_lower_alpha_set as wordsSet
 import pandas as pd
 from random import randint
-
-from constants import CORRECT, INCORRECT, NOT_DONE
-
+class Status(Enum):
+    NOT_DONE = -1
+    CORRECT = 1
+    INCORRECT = 0
 
 class WordObject:
     def __init__(self, word):
@@ -52,8 +54,8 @@ class WordObject:
     def check(self):
         "returns 1 if is a valid word, 0 if is not a valid word, or -1 if there are still infected letters"
         if self.__numInfected > 0:
-            return NOT_DONE
-        return CORRECT if "".join(self.__letters) in wordsSet else INCORRECT
+            return Status.NOT_DONE
+        return Status.CORRECT if "".join(self.__letters) in wordsSet else Status.INCORRECT
 
     def hitLetter(self, i):
         "removes letter at index i if possible, else returns False"
