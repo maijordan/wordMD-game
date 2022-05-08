@@ -38,7 +38,7 @@ class GameEndView(arcade.View):
        
         highScore = str(self.findHighestScore(score))
         highscoreText = arcade.gui.UILabel(text = highScore,font_size = 18, text_color = arcade.color.BLUE_GREEN)
-        self.menu_grp.add(highscoreText.with_space_around(bottom=10))
+        self.menu_grp.add(highscoreText.with_space_around(bottom=30))
           
         start_btn = gui.UIFlatButton(
             text="Try Again!", width=200, style=Style.primary_btn
