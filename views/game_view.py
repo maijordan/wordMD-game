@@ -70,9 +70,15 @@ class GameView(arcade.View):
         
         self.manager = gui.UIManager()
         self.menu_grp = gui.UIBoxLayout()
+        
+        resume_btn = gui.UIFlatButton(
+            text="Resume", width=200, style=Style.primary_btn
+        )
+        self.menu_grp.add(resume_btn.with_space_around(bottom=20))
+        resume_btn.on_click = self.resume
 
         restart_btn = gui.UIFlatButton(
-            text="Restart", width=200, style=Style.primary_btn
+            text="Restart", width=200, style=Style.secondary_btn
         )
         self.menu_grp.add(restart_btn.with_space_around(bottom=20))
         restart_btn.on_click = self.restart
@@ -92,6 +98,9 @@ class GameView(arcade.View):
                 anchor_x="center_x", anchor_y="center_y", child=self.menu_grp
             )
         )
+        
+    def resume(self,event):
+        self.paused = not self.paused
         
     def restart(self,event):
         self.setup()
