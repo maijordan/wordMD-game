@@ -12,22 +12,13 @@ def main():
     """ Main function """
 
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    music = arcade.Sound(musicList[0], streaming = True)
+    current = music.play(volume = 0.2, loop = True)
     start_view = GameStartView()
     window.show_view(start_view)
     arcade.run()
-    play_song()
 
 
 if __name__ == "__main__":
     main()
     
-
-def play_song(self):
-    current = None
-    music = None
-    print(f"Playing {musicList[0]}")
-    if self.music:
-        self.music.stop()
-    self.music = arcade.Sound(musicList[0], streaming = True)
-    self.current = self.music.play(volume = 0.2, loop = True)
-    time.sleep(.03)
