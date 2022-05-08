@@ -1,11 +1,6 @@
 import arcade
+from constants import SCREEN_HEIGHT, SCREEN_TITLE, SCREEN_WIDTH
 from views.game_start_view import GameStartView
-
-# CONSTANTS
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 650
-SCREEN_TITLE = "wordMD"
-
 
 def main():
     """ Main function """

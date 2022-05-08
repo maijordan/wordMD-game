@@ -1,10 +1,11 @@
 import arcade
+from constants import FONT_NAME
 
 
 class Style:
     primary_btn = {
-        "font_name": ("calibri", "arial"),
-        "font_size": 20,
+        "font_name": (FONT_NAME,"calibri", "arial"),
+        "font_size": 28,
         "font_color": arcade.color.WHITE,
         "border_width": 2,
         "border_color": None,
@@ -15,8 +16,8 @@ class Style:
     }
 
     secondary_btn = {
-        "font_name": ("calibri", "arial"),
-        "font_size": 20,
+        "font_name": (FONT_NAME,"calibri", "arial"),
+        "font_size": 28,
         "font_color": arcade.color.WHITE,
         "border_width": 2,
         "border_color": None,

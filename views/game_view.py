@@ -1,17 +1,7 @@
 import arcade
 from letter_list import LetterList
 import views.game_end_view
-
-bulletDamage = -1  # keep value negative
-playerMovementSpeed = 5
-playerModel = arcade.Sprite("resources/ambulance_01.png", 0.05)
-gunSound = arcade.load_sound(":resources:sounds/hurt4.wav")
-correctSound = arcade.load_sound("resources/sounds/correct.mp3")
-incorrectSound = arcade.load_sound(":resources:sounds/hurt3.wav")
-backgroundScrollSpeed = -5 #always negative
-leftBarrier = 155
-rightBarrier = 845
-letterMovementSpeed = -1 #always negative
+from constants import BKGRD_COLOR, BULLET_IMG, BULLET_IMG_SCALE, BULLET_SPEED,FONT_NAME,BULLET_DMG,LEFT_BARRIER, NUM_LIVES,RIGHT_BARRIER,PLAYER_SPEED,BKGRD_SCROLL_SPEED,LETTER_SPEED,PLAYER_IMG,PLAYER_IMG_SCALE,GUN_SOUND,CORRECT_SOUND,INCORRECT_SOUND,ROAD_IMG,INFECTED_COUNT_COLOR,GUN_SOUND_VOL,PT_MULT
 
 class GameView(arcade.View):
     """View to show game screen"""
@@ -19,7 +9,7 @@ class GameView(arcade.View):
     def __init__(self):
         super().__init__()
 
-        self.letterList = LetterList(self.window.width)
+        self.letterList = LetterList(self.window.width,self.window.height)
         self.bulletList = arcade.SpriteList()
         self.playerList = arcade.SpriteList()
         self.backgroundList = arcade.SpriteList()
@@ -30,19 +20,19 @@ class GameView(arcade.View):
 
     def setup(self):
         self.playerPoints = 0;
-        self.background1 = arcade.Sprite("resources/road_01.png")
+        self.background1 = arcade.Sprite(ROAD_IMG)
         self.background1.width = self.window.width
         self.background1.height = self.window.height
         self.background1.center_x = self.window.width / 2
-        self.background1.change_y = backgroundScrollSpeed
+        self.background1.change_y = BKGRD_SCROLL_SPEED
         self.backgroundList.append(self.background1)
 
-        self.background2 = arcade.Sprite("resources/road_01.png")
+        self.background2 = arcade.Sprite(ROAD_IMG)
         self.background2.width = self.window.width
         self.background2.height = self.window.height
         self.background2.center_y = self.window.height
         self.background2.center_x = self.window.width / 2
-        self.background2.change_y = backgroundScrollSpeed
+        self.background2.change_y = BKGRD_SCROLL_SPEED
         self.backgroundList.append(self.background2)
         #DW about this
         # self.secret = arcade.Sprite("resources/secret.png", 0.1)
@@ -50,12 +40,12 @@ class GameView(arcade.View):
         # self.secret.center_y = 3600
         # self.secret.change_y = -15
         
-
-        playerModel.center_x = self.window.width / 2
-        playerModel.center_y = 50
-        self.playerList.append(playerModel)
+        self.playerModel = arcade.Sprite(PLAYER_IMG, PLAYER_IMG_SCALE)
+        self.playerModel.center_x = self.window.width / 2
+        self.playerModel.center_y = 50
+        self.playerList.append(self.playerModel)
         
-        self.lives = 5
+        self.lives = NUM_LIVES
         
 
     def on_show(self):
@@ -72,10 +62,10 @@ class GameView(arcade.View):
         self.letterList.letters.draw()
         for letter in self.letterList.letters:
             #letter move down speed
-            letter.center_y += letterMovementSpeed
+            letter.center_y += LETTER_SPEED
             letter.currentHealthBar()
                         
-        arcade.draw_lrtb_rectangle_filled(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
+        arcade.draw_lrtb_rectangle_filled(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, BKGRD_COLOR);
         arcade.draw_lrtb_rectangle_outline(self.window.width - 130, self.window.width - 42, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
 
         arcade.draw_text(
@@ -85,7 +75,7 @@ class GameView(arcade.View):
             arcade.csscolor.WHITE,
             font_size=26,
             anchor_x="center",
-            font_name="Kenney High"
+            font_name=FONT_NAME
         )
 
         arcade.draw_text(
@@ -97,7 +87,7 @@ class GameView(arcade.View):
             anchor_x="center",
         )
         
-        arcade.draw_lrtb_rectangle_filled(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.DARK_SLATE_GRAY);
+        arcade.draw_lrtb_rectangle_filled(42, 130, self.window.height - 10, self.window.height - 80, BKGRD_COLOR);
         arcade.draw_lrtb_rectangle_outline(42, 130, self.window.height - 10, self.window.height - 80, arcade.csscolor.WHITE, 3);
 
         arcade.draw_text(
@@ -107,7 +97,7 @@ class GameView(arcade.View):
             arcade.csscolor.WHITE,
             font_size=26,
             anchor_x="center",
-            font_name="Kenney High"
+            font_name=FONT_NAME
         )
 
         arcade.draw_text(
@@ -117,7 +107,7 @@ class GameView(arcade.View):
             arcade.csscolor.WHITE_SMOKE,
             font_size=18,
             anchor_x="center",
-            font_name="Kenney High"
+            font_name=FONT_NAME
         )
         
         if self.showInfected:
@@ -125,20 +115,20 @@ class GameView(arcade.View):
                 "REMAINING",
                 self.window.width / 2,
                 self.window.height / 2 + 70,
-                arcade.make_transparent_color(arcade.color.ARSENIC, 200),
+                INFECTED_COUNT_COLOR,
                 font_size=36,
                 anchor_x="center",
-                font_name="Kenney High"
+                font_name=FONT_NAME
             )
             
             arcade.draw_text(
                 self.letterList.infectedCount,
                 self.window.width / 2,
                 self.window.height / 2 - 100,
-                arcade.make_transparent_color(arcade.color.ARSENIC, 200),
+                INFECTED_COUNT_COLOR,
                 font_size=200,
                 anchor_x="center",
-                font_name="Kenney High"
+                font_name=FONT_NAME
             )
 
     def on_update(self, delta_time):
@@ -149,19 +139,19 @@ class GameView(arcade.View):
         if self.spacePressed:
             bullet = self.createBullet()
             self.bulletList.append(bullet)
-            arcade.play_sound(gunSound, 0.25)
+            arcade.play_sound(GUN_SOUND, GUN_SOUND_VOL)
         if self.leftPressed:
-            if (playerModel.center_x - playerModel.width/2) - playerMovementSpeed >= leftBarrier:
-                playerModel.center_x += -playerMovementSpeed
+            if (self.playerModel.center_x - self.playerModel.width/2) - PLAYER_SPEED >= LEFT_BARRIER:
+                self.playerModel.center_x += -PLAYER_SPEED
         if self.rightPressed:
-            if (playerModel.center_x + playerModel.width/2) + playerMovementSpeed <= rightBarrier:
-                playerModel.center_x += playerMovementSpeed
+            if (self.playerModel.center_x + self.playerModel.width/2) + PLAYER_SPEED <= RIGHT_BARRIER:
+                self.playerModel.center_x += PLAYER_SPEED
         
         #for loop to check for when letter reaches the player height
         for letter in self.letterList.letters:
-            if(letter.bottom < playerModel.center_y + playerModel.height/2):
+            if(letter.bottom < self.playerModel.center_y + self.playerModel.height/2):
                 self.letterList.genWord()
-                arcade.play_sound(incorrectSound)
+                arcade.play_sound(INCORRECT_SOUND)
                 self.die()
                 break
                 
@@ -172,15 +162,15 @@ class GameView(arcade.View):
             if len(hitList) > 0:
                 bullet.remove_from_sprite_lists()
                 for letter in hitList:
-                    letter.currentHealth += bulletDamage
+                    letter.currentHealth += BULLET_DMG
                 if letter.currentHealth <= 0:
                     self.letterList.remove(letter)
                     #add points 
-                    self.playerPoints += (self.letterList.getPoints * 100)
-                    if(self.letterList.getPoints > 0):
-                        arcade.play_sound(correctSound)
+                    self.playerPoints += (self.letterList.points * PT_MULT)
+                    if(self.letterList.points > 0):
+                        arcade.play_sound(CORRECT_SOUND)
                     if(self.letterList.isWrong):
-                        arcade.play_sound(incorrectSound)
+                        arcade.play_sound(INCORRECT_SOUND)
                         self.die()
                       
                     
@@ -200,10 +190,10 @@ class GameView(arcade.View):
             self.window.show_view(views.game_end_view.GameEndView())
 
     def createBullet(self):
-        bullet = arcade.Sprite("resources/syringe_01.png", 0.02)
-        bullet.change_y = 46
-        bullet.center_x = playerModel.center_x
-        bullet.bottom = playerModel.center_y + 4
+        bullet = arcade.Sprite(BULLET_IMG, BULLET_IMG_SCALE)
+        bullet.change_y = BULLET_SPEED
+        bullet.center_x = self.playerModel.center_x
+        bullet.bottom = self.playerModel.center_y + 4
 
         return bullet
 

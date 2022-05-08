@@ -2,6 +2,8 @@ from english_words import english_words_lower_alpha_set as wordsSet
 import pandas as pd
 from random import randint
 
+from constants import CORRECT, INCORRECT, NOT_DONE
+
 
 class WordObject:
     def __init__(self, word):
@@ -11,7 +13,7 @@ class WordObject:
         self.__points = 0
         
     @property
-    def getPoints(self):
+    def points(self):
         return self.__points
         
     @property
@@ -50,8 +52,8 @@ class WordObject:
     def check(self):
         "returns 1 if is a valid word, 0 if is not a valid word, or -1 if there are still infected letters"
         if self.__numInfected > 0:
-            return -1
-        return "".join(self.__letters) in wordsSet
+            return NOT_DONE
+        return CORRECT if "".join(self.__letters) in wordsSet else INCORRECT
 
     def hitLetter(self, i):
         "removes letter at index i if possible, else returns False"

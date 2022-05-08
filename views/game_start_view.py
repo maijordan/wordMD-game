@@ -1,4 +1,5 @@
 import arcade
+from constants import BKGRD_COLOR,TITLE_IMG,TITLE_IMG_WIDTH
 from arcade import gui
 from style import Style
 import views.game_view
@@ -11,12 +12,12 @@ class GameStartView(arcade.View):
         self.manager = gui.UIManager()
         self.manager.enable()
 
-        arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
+        arcade.set_background_color(BKGRD_COLOR)
 
         self.menuGrp = gui.UIBoxLayout()
 
         title = gui.UISpriteWidget(
-            sprite=arcade.Sprite("resources/title_01.png"), width=350
+            sprite=arcade.Sprite(TITLE_IMG), width=TITLE_IMG_WIDTH
         )
         self.menuGrp.add(title.with_space_around(bottom=50))
 
