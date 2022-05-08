@@ -1,6 +1,7 @@
 import arcade
+from utils.constants import BKGRD_COLOR
 from arcade import gui
-from style import Style
+from utils.ui_utils import genBtn, genTitle
 import views.game_view
 import views.game_instruct_view
 
@@ -9,48 +10,45 @@ class GameStartView(arcade.View):
     """View to show start screen"""
 
     def on_show(self):
+        #init ui manager
         self.manager = gui.UIManager()
         self.manager.enable()
 
-        arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
+        arcade.set_background_color(BKGRD_COLOR)
 
-        self.menu_grp = gui.UIBoxLayout()
+        #create box to group all btns
+        self.menuGrp = gui.UIBoxLayout()
 
-        title = gui.UISpriteWidget(
-            sprite=arcade.Sprite("resources/title_01.png"), width=350
-        )
-        self.menu_grp.add(title.with_space_around(bottom=50))
+        #add logo
+        self.menuGrp.add(genTitle())
 
-        start_btn = gui.UIFlatButton(text="Start", width=200, style=Style.primary_btn)
-        self.menu_grp.add(start_btn.with_space_around(bottom=20))
-        start_btn.on_click = self.start
+        #create and add btns
+        startBtn = genBtn("Start",self.start)
+        self.menuGrp.add(startBtn)
 
-        how_btn = gui.UIFlatButton(text="How to Play", width=200, style=Style.secondary_btn)
-        self.menu_grp.add(how_btn.with_space_around(bottom=20))
-        how_btn.on_click = self.instruct
+        
+        howBtn = genBtn("How to Play",self.instruct,False)
+        self.menuGrp.add(howBtn)
 
-        quit_btn = gui.UIFlatButton(text="Quit", width=200, style=Style.secondary_btn)
-        self.menu_grp.add(quit_btn.with_space_around(bottom=20))
-        quit_btn.on_click = self.quit
+        quitBtn = genBtn("Quit",self.quit,False)
+        self.menuGrp.add(quitBtn)
 
+        #add and center btn group
         self.manager.add(
             gui.UIAnchorWidget(
-                anchor_x="center_x", anchor_y="center_y", child=self.menu_grp
+                anchor_x="center_x", anchor_y="center_y", child=self.menuGrp
             )
         )
 
     def start(self, event):
-        print("Starting wordMD")
-        self.manager.disable()
+        self.manager.disable() #disable btns before moving to new view
         self.window.show_view(views.game_view.GameView())
     
     def instruct(self, event):
-        print("Showing how to play")
         self.manager.disable()
         self.window.show_view(views.game_instruct_view.GameInstructView())
 
     def quit(self, event):
-        print("Exiting wordMD")
         arcade.exit()
 
     def on_draw(self):

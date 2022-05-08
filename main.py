@@ -1,21 +1,16 @@
 import arcade
+from utils.constants import BKGRD_MUSIC, MUSIC_VOL, SCREEN_HEIGHT, SCREEN_TITLE, SCREEN_WIDTH
 from views.game_start_view import GameStartView
-import time
-
-# CONSTANTS
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 650
-SCREEN_TITLE = "wordMD"
-musicList = ["resources/sounds/driftveil.mp3"]
 
 def main():
-    """ Main function """
+    """ Main function (run to start game)"""
 
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    music = arcade.Sound(musicList[0], streaming = True)
-    current = music.play(volume = 0.2, loop = True)
+    music = arcade.Sound(BKGRD_MUSIC, streaming = True)
+    music.play(volume = MUSIC_VOL, loop = True)
     start_view = GameStartView()
     window.show_view(start_view)
+    
     arcade.run()
 
 
