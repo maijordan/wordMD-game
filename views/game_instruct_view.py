@@ -1,6 +1,6 @@
 import arcade
 from arcade import gui
-from utils.constants import FONT_NAME, SCREEN_HEIGHT, SCREEN_WIDTH
+from utils.constants import FONT_NAME, READABLE_FONT_NAME, SCREEN_HEIGHT, SCREEN_WIDTH
 from utils.ui_utils import genBtn
 import views.game_start_view
 
@@ -38,10 +38,10 @@ class GameInstructView(arcade.View):
         self.manager.draw()
 
     def drawCenteredText(self,title,heightOffset,large=False):
-        arcade.draw_text(title, SCREEN_WIDTH / 2, SCREEN_HEIGHT - heightOffset,arcade.color.WHITE, font_size=(70 if large else 35), anchor_x="center",font_name=FONT_NAME)
+        arcade.draw_text(title, SCREEN_WIDTH / 2, SCREEN_HEIGHT - heightOffset,arcade.color.WHITE, font_size=(70 if large else 35), anchor_x="center",font_name=(FONT_NAME if large else READABLE_FONT_NAME))
         
     def drawListText(self,title,heightOffset):
-        arcade.draw_text(title,90, SCREEN_HEIGHT - heightOffset, arcade.color.WHITE, font_size=28,anchor_x="left",font_name=FONT_NAME)
+        arcade.draw_text(title,90, SCREEN_HEIGHT - heightOffset, arcade.color.WHITE, font_size=28,anchor_x="left",font_name=READABLE_FONT_NAME)
 
     def back(self, event):
         self.manager.disable()

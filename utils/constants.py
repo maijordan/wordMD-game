@@ -7,6 +7,7 @@ SCREEN_TITLE = "wordMD"
 
 #style constants
 FONT_NAME = "Kenney High"
+READABLE_FONT_NAME = "Kenney Pixel"
 BKGRD_COLOR = arcade.csscolor.DARK_SLATE_GRAY
 INFECTED_COUNT_COLOR = arcade.make_transparent_color(arcade.color.ARSENIC, 200)
 
