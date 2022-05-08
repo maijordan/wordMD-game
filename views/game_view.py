@@ -11,6 +11,7 @@ playerModel = arcade.Sprite("resources/ambulance_01.png", 0.05)
 gunSound = arcade.load_sound(":resources:sounds/hurt4.wav")
 correctSound = arcade.load_sound("resources/sounds/correct.mp3")
 incorrectSound = arcade.load_sound(":resources:sounds/hurt3.wav")
+
 backgroundScrollSpeed = -5 #always negative
 leftBarrier = 155
 rightBarrier = 845
@@ -38,7 +39,6 @@ class GameView(arcade.View):
         self.leftPressed = False
         self.show_infected = False
         self.paused = False
-        
         self.player_points = 0;
         self.background1 = arcade.Sprite("resources/road_01.png")
         self.background1.width = self.window.width
@@ -98,6 +98,7 @@ class GameView(arcade.View):
                 anchor_x="center_x", anchor_y="center_y", child=self.menu_grp
             )
         )
+        
         
     def resume(self,event):
         self.paused = not self.paused
@@ -327,3 +328,5 @@ class GameView(arcade.View):
             self.rightPressed = False
         elif key == arcade.key.LSHIFT:
             self.show_infected = False
+    
+  
