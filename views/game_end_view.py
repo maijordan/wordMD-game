@@ -10,6 +10,9 @@ class GameEndView(arcade.View):
 
     def on_show(self):
         self.manager = gui.UIManager()
+        file = open("resources/scores.txt", "r")
+        score = file.readline()
+        file.close()
         self.manager.enable()
 
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_GRAY)
@@ -19,8 +22,24 @@ class GameEndView(arcade.View):
         title = gui.UISpriteWidget(
             sprite=arcade.Sprite("resources/title_01.png"), width=350
         )
-        self.menu_grp.add(title.with_space_around(bottom=50))
-
+        self.menu_grp.add(title.with_space_around(bottom=30))
+        
+        yourScoreText = arcade.gui.UILabel(text = "Your Score",font_size = 18)
+        self.menu_grp.add(yourScoreText.with_space_around(bottom=10))
+    
+        playerScore = str(self.findPlayerScore(score))
+        playerText = arcade.gui.UILabel(text = playerScore,font_size = 18,text_color = arcade.color.BLUE_GREEN)
+        self.menu_grp.add(playerText.with_space_around(bottom=10))
+        
+    
+        highestScoreText = arcade.gui.UILabel(text = "High Score",font_size = 18)
+        self.menu_grp.add(highestScoreText.with_space_around(bottom=10))
+        
+       
+        highScore = str(self.findHighestScore(score))
+        highscoreText = arcade.gui.UILabel(text = highScore,font_size = 18, text_color = arcade.color.BLUE_GREEN)
+        self.menu_grp.add(highscoreText.with_space_around(bottom=30))
+          
         start_btn = gui.UIFlatButton(
             text="Try Again!", width=200, style=Style.primary_btn
         )
@@ -41,7 +60,11 @@ class GameEndView(arcade.View):
             gui.UIAnchorWidget(
                 anchor_x="center_x", anchor_y="center_y", child=self.menu_grp
             )
+            
+        
         )
+        
+        
 
     def restart(self, event):
         print("Restarting wordMD")
@@ -60,3 +83,19 @@ class GameEndView(arcade.View):
     def on_draw(self):
         self.clear()
         self.manager.draw()
+        
+    def findHighestScore(self, scores):
+        splitScores = scores.split(",")
+        splitScores.pop()
+        highScore = 0
+        for score in splitScores:
+            if int(score) > highScore:
+                highScore = int(score)
+        
+        return highScore
+    
+    def findPlayerScore(self,scores):
+        splitScore = scores.split(",")
+        splitScore.pop()
+        return splitScore[len(splitScore)-1]
+ 
