@@ -22,7 +22,7 @@ class LetterList:
         )
         offset = 0
         for l in self.__word.letters:
-            letter = LetterHealth("resources/letters/zombie_outline_thick/" + l + ".png", 0.25)
+            letter = LetterHealth("resources/letters/zombie/" + l + ".png", 0.25)
             letter.center_x = start + offset
             offset += self.__tile_spacing
             letter.center_y = self.__height
