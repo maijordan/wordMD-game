@@ -1,5 +1,5 @@
 import arcade
-from constants import SCREEN_HEIGHT, SCREEN_TITLE, SCREEN_WIDTH
+from utils.constants import SCREEN_HEIGHT, SCREEN_TITLE, SCREEN_WIDTH
 from views.game_start_view import GameStartView
 
 def main():

@@ -1,5 +1,5 @@
 import arcade
-from constants import BKGRD_SCROLL_SPEED, ROAD_IMG, SCREEN_HEIGHT, SCREEN_WIDTH
+from utils.constants import BKGRD_SCROLL_SPEED, ROAD_IMG, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class ScrollingBkgrdList:
     def __init__(self):

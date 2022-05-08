@@ -1,6 +1,6 @@
 import arcade
 
-from constants import LEFT_BARRIER, PLAYER_IMG, PLAYER_IMG_SCALE, PLAYER_SPEED, RIGHT_BARRIER, SCREEN_WIDTH
+from utils.constants import LEFT_BARRIER, PLAYER_IMG, PLAYER_IMG_SCALE, PLAYER_SPEED, RIGHT_BARRIER, SCREEN_WIDTH
 
 class PlayerList:
     def __init__(self):

@@ -1,6 +1,6 @@
 import arcade
-from constants import FONT_NAME
-
+from arcade import gui
+from utils.constants import FONT_NAME,TITLE_IMG,TITLE_IMG_WIDTH
 
 class Style:
     primary_btn = {
@@ -26,3 +26,17 @@ class Style:
         "border_color_pressed": arcade.color.WHITE,
         "font_color_pressed": arcade.color.WHITE_SMOKE,
     }
+
+
+def genTitle():
+    title = gui.UISpriteWidget(
+            sprite=arcade.Sprite(TITLE_IMG), width=TITLE_IMG_WIDTH
+        )
+    return title.with_space_around(bottom=50)
+
+def genBtn(title,onClick,isPrimary=True):
+    btn = gui.UIFlatButton(
+            text=title, width=200, style=(Style.primary_btn if isPrimary else Style.secondary_btn)
+        )
+    btn.on_click = onClick
+    return btn.with_space_around(bottom=20)

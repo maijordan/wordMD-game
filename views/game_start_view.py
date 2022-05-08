@@ -1,7 +1,7 @@
 import arcade
-from constants import BKGRD_COLOR
+from utils.constants import BKGRD_COLOR
 from arcade import gui
-from ui_utils import genBtn, genTitle
+from utils.ui_utils import genBtn, genTitle
 import views.game_view
 
 

@@ -4,7 +4,7 @@ from sprites.letters import LetterList
 from sprites.backgrounds import ScrollingBkgrdList
 from sprites.players import PlayerList
 import views.game_end_view
-from constants import BKGRD_COLOR,FONT_NAME, NUM_LIVES,CORRECT_SOUND,INCORRECT_SOUND,INFECTED_COUNT_COLOR, SCREEN_HEIGHT, SCREEN_WIDTH
+from utils.constants import BKGRD_COLOR,FONT_NAME, NUM_LIVES,CORRECT_SOUND,INCORRECT_SOUND,INFECTED_COUNT_COLOR, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class GameView(arcade.View):
     """View to show game screen"""
