@@ -300,6 +300,10 @@ class GameView(arcade.View):
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
             self.paused = not self.paused
+            self.spacePressed = False
+            self.leftPressed = False
+            self.rightPressed = False
+            self.show_infected = False
         elif key == arcade.key.SPACE:
             #creation of bullet to add to bullet sprite list
             #self.bullet_list.append(self.create_bullet())
