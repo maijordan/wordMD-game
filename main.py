@@ -1,5 +1,5 @@
 import arcade
-from utils.constants import BKGRD_MUSIC, SCREEN_HEIGHT, SCREEN_TITLE, SCREEN_WIDTH
+from utils.constants import BKGRD_MUSIC, MUSIC_VOL, SCREEN_HEIGHT, SCREEN_TITLE, SCREEN_WIDTH
 from views.game_start_view import GameStartView
 
 def main():
@@ -7,7 +7,7 @@ def main():
 
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     music = arcade.Sound(BKGRD_MUSIC, streaming = True)
-    music.play(volume = 0.2, loop = True)
+    music.play(volume = MUSIC_VOL, loop = True)
     start_view = GameStartView()
     window.show_view(start_view)
     

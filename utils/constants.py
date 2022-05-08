@@ -38,9 +38,10 @@ LEFT_BARRIER = 155
 RIGHT_BARRIER = 845
 
 #audio constants
+MUSIC_VOL = 0.1
 BKGRD_MUSIC = "resources/sounds/driftveil.mp3"
 GUN_SOUND = arcade.load_sound(":resources:sounds/hurt4.wav")
-GUN_SOUND_VOL = 0.25
+GUN_SOUND_VOL = 0.1
 CORRECT_SOUND = arcade.load_sound("resources/sounds/correct.mp3")
 INCORRECT_SOUND = arcade.load_sound(":resources:sounds/hurt3.wav")
 
