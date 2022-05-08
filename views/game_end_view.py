@@ -10,7 +10,7 @@ class GameEndView(arcade.View):
 
     def on_show(self):
         self.manager = gui.UIManager()
-        file = open("resources/scores.txt", "r")
+        file = open("scores.txt", "r")
         score = file.readline()
         file.close()
         self.manager.enable()
