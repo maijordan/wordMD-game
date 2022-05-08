@@ -6,7 +6,7 @@ from sprites.backgrounds import ScrollingBkgrdList
 from sprites.players import PlayerList
 from utils.ui_utils import genBtn
 import views.game_end_view
-from utils.constants import BKGRD_COLOR,FONT_NAME, NUM_LIVES,CORRECT_SOUND,INCORRECT_SOUND,INFECTED_COUNT_COLOR, SCREEN_HEIGHT, SCREEN_WIDTH
+from utils.constants import BKGRD_COLOR,FONT_NAME, NUM_LIVES,CORRECT_SOUND,INCORRECT_SOUND,INFECTED_COUNT_COLOR, SCORE_FILE, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class GameView(arcade.View):
     """View to show game screen"""
@@ -191,7 +191,7 @@ class GameView(arcade.View):
         
         #if no more lives, go to end game view
         if self.lives == 0:
-            file = open("scores.txt", "a")
+            file = open(SCORE_FILE, "a")
             file.write(str(self.playerPoints) + ",")
             file.close()
             self.window.show_view(views.game_end_view.GameEndView())

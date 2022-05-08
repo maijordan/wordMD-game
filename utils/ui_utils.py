@@ -49,3 +49,9 @@ def genBtn(title,onClick,isPrimary=True):
         )
     btn.on_click = onClick
     return btn.with_space_around(bottom=20)
+
+def genLabel(title,isNum=False):
+    """Generates label with appropriate spacing using title text, changes color if is a num"""
+    label = arcade.gui.UILabel(text = str(title),font_size = 18,text_color=(arcade.color.BLUE_GREEN if isNum else arcade.color.WHITE))
+    return label.with_space_around(bottom=10)
+    

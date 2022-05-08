@@ -27,7 +27,7 @@ class GameStartView(arcade.View):
         self.menuGrp.add(startBtn)
 
         
-        howBtn = genBtn("How to Play",self.instruct)
+        howBtn = genBtn("How to Play",self.instruct,False)
         self.menuGrp.add(howBtn)
 
         quitBtn = genBtn("Quit",self.quit,False)

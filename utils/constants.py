@@ -10,6 +10,9 @@ FONT_NAME = "Kenney High"
 BKGRD_COLOR = arcade.csscolor.DARK_SLATE_GRAY
 INFECTED_COUNT_COLOR = arcade.make_transparent_color(arcade.color.ARSENIC, 200)
 
+#score constants
+SCORE_FILE = "scores.txt"
+
 #title sprite constants
 TITLE_IMG = "resources/title_01.png"
 TITLE_IMG_WIDTH = 350

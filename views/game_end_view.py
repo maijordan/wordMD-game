@@ -1,7 +1,7 @@
 import arcade
-from utils.constants import BKGRD_COLOR
+from utils.constants import BKGRD_COLOR, SCORE_FILE
 from arcade import gui
-from utils.ui_utils import genBtn, genTitle
+from utils.ui_utils import genBtn, genLabel, genTitle
 import views.game_view
 import views.game_start_view
 
@@ -11,9 +11,6 @@ class GameEndView(arcade.View):
     def on_show(self):
         #init ui manager
         self.manager = gui.UIManager()
-        file = open("scores.txt", "r")
-        score = file.readline()
-        file.close()
         self.manager.enable()
 
         arcade.set_background_color(BKGRD_COLOR)
@@ -24,20 +21,19 @@ class GameEndView(arcade.View):
         #add logo
         self.menuGrp.add(genTitle())
         
-        yourScoreText = arcade.gui.UILabel(text = "Your Score",font_size = 18)
-        self.menuGrp.add(yourScoreText.with_space_around(bottom=10))
-    
-        playerScore = str(self.findPlayerScore(score))
-        playerText = arcade.gui.UILabel(text = playerScore,font_size = 18,text_color = arcade.color.BLUE_GREEN)
-        self.menuGrp.add(playerText.with_space_around(bottom=10))
+        #retrieve and show scores
+        playerScore,highScore = self.processScoreFile()
         
-    
-        highestScoreText = arcade.gui.UILabel(text = "High Score",font_size = 18)
-        self.menuGrp.add(highestScoreText.with_space_around(bottom=10))
+        yourScoreText = genLabel("Your Score")
+        self.menuGrp.add(yourScoreText)
         
-       
-        highScore = str(self.findHighestScore(score))
-        highscoreText = arcade.gui.UILabel(text = highScore,font_size = 18, text_color = arcade.color.BLUE_GREEN)
+        playerText = genLabel(playerScore,True)
+        self.menuGrp.add(playerText)
+        
+        highestScoreText = genLabel("High Score")
+        self.menuGrp.add(highestScoreText)
+        
+        highscoreText = genLabel(highScore,True)
         self.menuGrp.add(highscoreText.with_space_around(bottom=30))
           
         #create and add btns
@@ -56,7 +52,6 @@ class GameEndView(arcade.View):
                 anchor_x="center_x", anchor_y="center_y", child=self.menuGrp
             )
         )
-        
 
     def restart(self, event):
         self.manager.disable() #disable btns before moving to new view
@@ -73,18 +68,13 @@ class GameEndView(arcade.View):
         self.clear()
         self.manager.draw()
         
-    def findHighestScore(self, scores):
-        splitScores = scores.split(",")
-        splitScores.pop()
-        highScore = 0
-        for score in splitScores:
-            if int(score) > highScore:
-                highScore = int(score)
-        
-        return highScore
-    
-    def findPlayerScore(self,scores):
-        splitScore = scores.split(",")
-        splitScore.pop()
-        return splitScore[len(splitScore)-1]
+    def processScoreFile(self):
+        """Processes score file and returns (last score, high score)"""
+        file = open(SCORE_FILE, "r")
+        scores = file.readline()
+        file.close()
+        splitScores = scores.split(",")[:-1]
+        lastScore = splitScores[-1]
+        highScore = max(map(int,splitScores))
+        return lastScore,highScore
  

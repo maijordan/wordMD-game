@@ -8,6 +8,7 @@ def main():
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     startView = GameStartView()
     window.show_view(startView)
+    
     arcade.run()
 
 
