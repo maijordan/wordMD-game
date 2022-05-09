@@ -217,9 +217,9 @@ class GameView(arcade.View):
             self.showInfected = False
         elif key == arcade.key.SPACE:
             self.spacePressed = True
-        elif key == arcade.key.LEFT:
+        elif key == arcade.key.LEFT or key == arcade.key.A:
             self.leftPressed = True
-        elif key == arcade.key.RIGHT:
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.rightPressed = True
         elif key == arcade.key.LSHIFT:
             self.showInfected = True
@@ -229,9 +229,9 @@ class GameView(arcade.View):
             return
         if key == arcade.key.SPACE:
             self.spacePressed = False
-        elif key == arcade.key.LEFT:
+        elif key == arcade.key.LEFT or key == arcade.key.A:
             self.leftPressed = False
-        elif key == arcade.key.RIGHT:
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.rightPressed = False
         elif key == arcade.key.LSHIFT:
             self.showInfected = False
