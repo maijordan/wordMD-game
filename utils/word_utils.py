@@ -77,7 +77,7 @@ class WordGenerator:
 
     def __init__(self):
         #inserts all words into database so they can be sampled based on length
-        words = list(wordsSet)
+        words = [w for w in wordsSet if w.isalpha()]
         lengths = [len(w) for w in words]
         self.words = pd.DataFrame({"Word": words, "Length": lengths})
 
