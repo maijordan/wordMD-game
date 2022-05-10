@@ -60,5 +60,5 @@ PT_MULT = 100
 PLAYER_SPEED = 5
 BULLET_SPEED = 46
 BKGRD_SCROLL_SPEED = -5 #always negative
-LETTER_SPEED = -1 #always negative
+LETTER_SPEED = -0.9 #always negative
 
