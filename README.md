@@ -5,11 +5,14 @@ As a certified Word Doctor, we need you to cure them by removing the infectious 
 
 To play the game, run ``main.py``
 
-## Required Python Packages:
-(Install with ``pip install <pkg>``)
-- english-words
-- pandas
-- arcade
+## Instructions:
+Install python and pyenv.
+Start a pyenv.
+Use the following commands to install the required python libraries:
+- pip install arcade
+- pip install english-words
+- pip install pandas
+Run the game from main.py.
 
 ## Developers
 - April Chao
